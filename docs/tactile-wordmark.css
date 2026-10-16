@@ -10,6 +10,7 @@
   initial-value: 0;
 }
 .tactile-wordmark {
+  --letter-gap: -7px;
   --touch-x: 50%;
   --touch-y: 65%;
   --ink-radius: 0px;
@@ -42,10 +43,16 @@
   z-index: 1;
   display: inline-block;
   color: var(--letter-ink);
+  /* Keep the full glyph paint box; tighten the space between boxes instead. */
+  letter-spacing: 0;
+  margin-inline-end: var(--letter-gap);
   transform-origin: 50% 80%;
   transform: translateY(calc(var(--press) * .075em))
     scale(calc(1 + var(--press) * .035), calc(1 - var(--press) * .1));
   transition: transform 650ms cubic-bezier(.2, 1.5, .35, 1);
+}
+.hero h1 .tactile-letter:last-child {
+  margin-inline-end: 0;
 }
 .hero h1 .tactile-pac {
   --letter-ink: var(--green);
@@ -96,6 +103,9 @@
   border: 1.5px solid #c2764d;
   box-shadow: 0 0 0 .12em #c2764d0b;
   transform: translate(-50%, -50%) scale(.3);
+}
+@media (max-width: 760px) {
+  .tactile-wordmark { --letter-gap: -6px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .tactile-wordmark { --ink-heat: 0; transition: none; }
