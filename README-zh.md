@@ -1,4 +1,4 @@
-<h1 align="center">🖐️ TacPAC</h1>
+<h1 align="center"><img src="assets/tacpac_logo.svg" width="36" height="36" alt="TacPAC logo"> TacPAC</h1>
 
 <p align="center"><strong>面向接触密集型操作的触觉预测与实时动作修正世界-动作模型</strong></p>
 

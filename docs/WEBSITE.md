@@ -8,8 +8,8 @@ GitHub Pages publishes `main` → `/docs`. The `.nojekyll` file keeps this a pla
 
 - `index.html`: paper metadata, authors, method, demo, and citation.
 - `styles.css`: responsive layout and typography.
-- The navigation mark and `favicon.svg` pair two gripper jaws and a tactile contact point with a return arrow, representing contact-driven action correction. Keep their geometry in sync.
-- `tactile-wordmark.css` and `tactile-wordmark.js`: a brief touch introduction on the hero title, with local letter compression, a contact halo, and spring release. Mouse, touch, Enter, and Space trigger the same effect. Motion stops offscreen or in a hidden tab and respects reduced-motion preferences.
+- The navigation mark and `favicon.svg` pair two gripper jaws and a tactile contact point with a return arrow, representing contact-driven action correction. The two READMEs use the same mark in `../assets/tacpac_logo.svg`. Keep their geometry in sync.
+- `tactile-wordmark.css` and `tactile-wordmark.js`: a brief touch introduction on the hero title, with local letter compression, a contact halo, a warm radial glow inside the glyphs, and spring release. Mouse, touch, Enter, and Space trigger the same effect. Motion stops offscreen or in a hidden tab and respects reduced-motion preferences.
 - `app.js`: task switching, comparison playback, result data, figure viewer, and citation copy.
 - `visualizations.css` and `visualizations.js`: native teaser, sequential SVG architecture, interactive inference timeline, and experimental charts.
 - `phase-data.js`, `trace-data.js`, and `data/`: digitized Figure 5 values/error geometry and original vector paths for Figures 7–11.

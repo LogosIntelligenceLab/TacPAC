@@ -1,7 +1,19 @@
 /* Soft contact, local compression, and an elastic release. */
+@property --ink-radius {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+@property --ink-heat {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
 .tactile-wordmark {
   --touch-x: 50%;
   --touch-y: 65%;
+  --ink-radius: 0px;
+  --ink-heat: 0;
   position: relative;
   display: inline-block;
   isolation: isolate;
@@ -16,23 +28,45 @@
   vertical-align: top;
   cursor: pointer;
   touch-action: pan-y;
+  transition: --ink-radius 750ms ease-out, --ink-heat 650ms ease;
+}
+.tactile-wordmark.is-touching {
+  --ink-radius: 1.25em;
+  --ink-heat: 1;
+  transition: --ink-radius 850ms cubic-bezier(.2, .7, .3, 1), --ink-heat 180ms ease;
 }
 .hero h1 .tactile-letter {
   --press: 0;
+  --letter-ink: var(--ink);
   position: relative;
   z-index: 1;
   display: inline-block;
-  color: var(--touch-color, var(--ink));
+  color: var(--letter-ink);
   transform-origin: 50% 80%;
   transform: translateY(calc(var(--press) * .075em))
     scale(calc(1 + var(--press) * .035), calc(1 - var(--press) * .1));
-  transition: transform 650ms cubic-bezier(.2, 1.5, .35, 1), color 450ms ease;
+  transition: transform 650ms cubic-bezier(.2, 1.5, .35, 1);
 }
 .hero h1 .tactile-pac {
-  color: var(--touch-color, var(--green));
+  --letter-ink: var(--green);
+}
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .hero h1 .tactile-letter {
+    /* Each glyph samples the same contact field, clipped to its own ink. */
+    background-color: var(--letter-ink);
+    background-image: radial-gradient(circle var(--ink-radius) at var(--ink-x, 50%) var(--touch-y),
+      rgba(244, 202, 150, var(--ink-heat)) 0%,
+      rgba(218, 146, 96, var(--ink-heat)) 30%,
+      rgba(194, 118, 77, calc(var(--ink-heat) * .7)) 58%,
+      transparent 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
 }
 .tactile-wordmark.is-touching .tactile-letter {
-  transition-duration: 130ms, 180ms;
+  transition-duration: 130ms;
   transition-timing-function: ease-out;
 }
 .tactile-halo,
@@ -64,6 +98,7 @@
   transform: translate(-50%, -50%) scale(.3);
 }
 @media (prefers-reduced-motion: reduce) {
+  .tactile-wordmark { --ink-heat: 0; transition: none; }
   .hero h1 .tactile-letter { transform: none; transition: none; }
   .tactile-halo, .tactile-ripple { display: none; }
 }

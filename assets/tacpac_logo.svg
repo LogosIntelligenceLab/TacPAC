@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>TacPAC — tactile contact and action correction</title>
+  <rect width="64" height="64" rx="16" fill="#173e40"/>
+  <g transform="translate(4 4) scale(1.75)" fill="none" stroke="#d2e8d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7 9a11 11 0 0 1 19 1m0-5v5h-5"/>
+    <path d="M10 15H5v12h5m12-12h5v12h-5" stroke-width="2.5"/>
+    <circle cx="16" cy="21" r="3.5" fill="#e6b089" stroke="none"/>
+  </g>
+</svg>

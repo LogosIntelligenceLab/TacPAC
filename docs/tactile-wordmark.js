@@ -6,7 +6,6 @@
   const letters = [...mark.querySelectorAll('.tactile-letter')];
   const ripple = mark.querySelector('.tactile-ripple');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const ink = [22, 53, 57], green = [47, 106, 89], contact = [194, 118, 77];
   let timers = [], rippleAnimation = null, pointerFrame = 0;
   let inView = false, introduced = false, pointer = null;
 
@@ -19,7 +18,6 @@
     mark.classList.remove('is-touching');
     letters.forEach(letter => {
       letter.style.removeProperty('--press');
-      letter.style.removeProperty('--touch-color');
     });
   }
 
@@ -46,10 +44,8 @@
       const center = letter.offsetLeft + letter.offsetWidth / 2;
       const distance = (center - x) / (height * .48);
       const pressure = Math.exp(-distance * distance * 1.6) * strength;
-      const base = letter.classList.contains('tactile-pac') ? green : ink;
-      const color = base.map((value, i) => Math.round(value + (contact[i] - value) * pressure * .58));
       letter.style.setProperty('--press', pressure.toFixed(3));
-      letter.style.setProperty('--touch-color', `rgb(${color.join(',')})`);
+      letter.style.setProperty('--ink-x', `${x - letter.offsetLeft}px`);
     });
 
     if (showRipple) {
