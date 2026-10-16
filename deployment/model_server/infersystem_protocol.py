@@ -19,7 +19,7 @@ from typing import Any, Mapping, Sequence
 import numpy as np
 from PIL import Image
 
-from starVLA.dataloader.vla.image_fit import RESIZE_MODES, resize_crop_geometry
+from TacPAC.dataloader.vla.image_fit import RESIZE_MODES, resize_crop_geometry
 
 
 RESERVED_REQUEST_KEYS = {

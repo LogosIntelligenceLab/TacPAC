@@ -11,10 +11,10 @@ import torch.nn.functional as F
 from omegaconf import OmegaConf
 from safetensors import safe_open
 
-from starVLA.model.modules.wan_mot.action_expert import ActionExpert
+from TacPAC.model.modules.wan_mot.action_expert import ActionExpert
 
 
-DEFAULT_CONFIG = "starVLA/config/training/vla/starvla_wam.yaml"
+DEFAULT_CONFIG = "TacPAC/config/training/vla/starvla_wam.yaml"
 DEFAULT_PRETRAINED_DIR = "playground/Pretrained_models/Wan2.2-TI2V-5B"
 DEFAULT_OUTPUT = "results/Checkpoints/WanMoT/ActionExpert_linear_interp_Wan22_alphascale_1024hdim.pt"
 

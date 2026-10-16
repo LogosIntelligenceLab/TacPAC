@@ -63,7 +63,7 @@ from lerobot.datasets.utils import check_timestamps_sync, get_episode_data_index
 
 import convert_arx_to_lerobot as arx
 
-from starVLA.dataloader.vla.image_fit import resize_crop_geometry
+from TacPAC.dataloader.vla.image_fit import resize_crop_geometry
 
 
 FPS = 30

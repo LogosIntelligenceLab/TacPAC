@@ -90,12 +90,12 @@ transfer, empty-bottle uprighting, and expansion-card insertion.
 
 | Component | Location |
 | --- | --- |
-| TacPAC framework and cache/correction flow | `starVLA/model/framework/WM4A/WanMoTJointTacExpert.py` |
-| Single-pass tactile expert | `starVLA/model/modules/wan_mot/tactile_expert.py` |
-| World-action Mixture-of-Transformers | `starVLA/model/modules/wan_mot/` |
-| Tactile preprocessing shared by train and inference | `starVLA/dataloader/vla/tactile_stress.py` |
-| LeRobot tactile data loading and execution offsets | `starVLA/dataloader/vla/dataset/` |
-| TacPAC training configuration | `starVLA/config/training/vla/starvla_wam.yaml` |
+| TacPAC framework and cache/correction flow | `TacPAC/model/framework/WM4A/WanMoTJointTacExpert.py` |
+| Single-pass tactile expert | `TacPAC/model/modules/wan_mot/tactile_expert.py` |
+| World-action Mixture-of-Transformers | `TacPAC/model/modules/wan_mot/` |
+| Tactile preprocessing shared by train and inference | `TacPAC/dataloader/vla/tactile_stress.py` |
+| LeRobot tactile data loading and execution offsets | `TacPAC/dataloader/vla/dataset/` |
+| TacPAC training configuration | `TacPAC/config/training/vla/starvla_wam.yaml` |
 | Stateful `prepare` / `refine` inference protocol | `deployment/model_server/server_infersystem.py` |
 | Unit and protocol tests | `scripts/test/test_tactile_*.py`, `scripts/test/test_infersystem_*.py` |
 
@@ -104,6 +104,7 @@ transfer, empty-bottle uprighting, and expansion-card insertion.
 ## 🛠️ Installation
 
 The code is tested with Python 3.10 and CUDA-capable PyTorch environments.
+See the [installation guide](docs/INSTALL.md) for dependency and video-decoder setup.
 
 ```bash
 git clone git@github.com:LogosRoboticsGroup/TacPAC.git
@@ -118,7 +119,7 @@ pip install -e .
 ```
 
 Download the Wan2.2 TI2V backbone and update the local model paths in
-`starVLA/config/training/vla/starvla_wam.yaml`. In particular, check `dit_path`, `vae_path`,
+`TacPAC/config/training/vla/starvla_wam.yaml`. In particular, check `dit_path`, `vae_path`,
 `text_encoder_path`, and `tokenizer_path` before training.
 
 ## 📦 Data preparation
@@ -134,7 +135,7 @@ observation.images.left_wrist_right_tactile
 ```
 
 Register local datasets and their `video_keys` in
-`starVLA/dataloader/vla/mixtures.py`. Keys containing `tactile` are treated as tactile views, and
+`TacPAC/dataloader/vla/mixtures.py`. Keys containing `tactile` are treated as tactile views, and
 stage-2 training emits `tactile_now` / `tactile_offset` samples through
 `datasets.vla_data.tactile_offsets_per_sample`.
 
@@ -145,7 +146,7 @@ Precompute the text embeddings used by both training stages:
 
 ```bash
 python scripts/vla/precompute_text_embeds.py \
-  --config_yaml starVLA/config/training/vla/starvla_wam.yaml \
+  --config_yaml TacPAC/config/training/vla/starvla_wam.yaml \
   --datasets.vla_data.data_mix flexiv_plug_4views \
   --datasets.vla_data.text_embedding_cache_dir data/text_embeds_cache/flexiv_plug_4views
 ```
@@ -196,8 +197,9 @@ The server exposes a stateful tactile protocol:
 - `refine`: send the latest tactile views, execution offset, and executed action prefix to correct
   the remaining actions of that plan.
 
-See `deployment/model_server/README.md` and
-`scripts/test/test_infersystem_stateful_tactile.py` for the request schema and reference flow.
+See the [TacPAC deployment guide](docs/deployment/REAL-zh.md) and
+[`test_infersystem_stateful_tactile.py`](scripts/test/test_infersystem_stateful_tactile.py)
+for the request schema and reference flow.
 
 ## 🧪 Tests
 

@@ -6,11 +6,11 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from starVLA.model.framework.WM4A.WanMoTJointTacExpert import WanMoTJointTacExpert
-from starVLA.model.modules.wan_mot.action_expert import ActionExpert
-from starVLA.model.modules.wan_mot.mot import MoT
-from starVLA.model.modules.wan_mot.tactile_expert import TactileExpert
-from starVLA.model.modules.wan_mot.wan_video_expert import WanVideoExpert
+from TacPAC.model.framework.WM4A.WanMoTJointTacExpert import WanMoTJointTacExpert
+from TacPAC.model.modules.wan_mot.action_expert import ActionExpert
+from TacPAC.model.modules.wan_mot.mot import MoT
+from TacPAC.model.modules.wan_mot.tactile_expert import TactileExpert
+from TacPAC.model.modules.wan_mot.wan_video_expert import WanVideoExpert
 
 
 HIDDEN, HEADS, HEAD_DIM, LAYERS = 64, 4, 16, 2
@@ -332,7 +332,7 @@ class SampleTactileOffsetsTest(unittest.TestCase):
 
         for missing in ("pinocchio", "decord"):  # only touched at import time / inside unused methods
             sys.modules.setdefault(missing, types.ModuleType(missing))
-        from starVLA.dataloader.vla.dataset.lerobot_dataset import LeRobotV2Dataset
+        from TacPAC.dataloader.vla.dataset.lerobot_dataset import LeRobotV2Dataset
 
         dataset = LeRobotV2Dataset.__new__(LeRobotV2Dataset)
         dataset.episode_step_indices = None

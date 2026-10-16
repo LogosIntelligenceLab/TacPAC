@@ -5,8 +5,8 @@ import unittest
 import torch
 import torch.nn as nn
 
-from starVLA.model.framework.WM4A.WanMoT import WanMoT
-from starVLA.model.modules.wan_mot.wan_video_expert import WanVideoExpert
+from TacPAC.model.framework.WM4A.WanMoT import WanMoT
+from TacPAC.model.modules.wan_mot.wan_video_expert import WanVideoExpert
 
 
 HIDDEN, HEADS, HEAD_DIM, LAYERS = 64, 4, 16, 2

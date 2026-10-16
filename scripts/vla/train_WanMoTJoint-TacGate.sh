@@ -12,7 +12,7 @@ cd "$REPO_ROOT"
 # === Configuration ===
 Framework_name=WanMoTJoint_TacGate
 freeze_module_list=''
-config_yaml=starVLA/config/training/vla/starvla_wam.yaml
+config_yaml=TacPAC/config/training/vla/starvla_wam.yaml
 run_root_dir=./results/Checkpoints/vla
 NPROC_PER_NODE=${NPROC_PER_NODE:-8}
 ###########################################################################################
@@ -65,9 +65,9 @@ export TORCHINDUCTOR_AUTOGRAD_CACHE=${TORCHINDUCTOR_AUTOGRAD_CACHE:-1}
 mkdir -p ${TORCHINDUCTOR_CACHE_DIR} ${TRITON_CACHE_DIR}
 
 accelerate launch \
-  --config_file starVLA/config/deepseeds/deepspeed_zero2.yaml \
+  --config_file TacPAC/config/deepseeds/deepspeed_zero2.yaml \
   ${DISTRIBUTED_ARGS} \
-  starVLA/training/train_starvla.py \
+  TacPAC/training/train_starvla.py \
   --config_yaml ${config_yaml} \
   --framework.name ${Framework_name} \
   --framework.video_model.load_text_encoder false \

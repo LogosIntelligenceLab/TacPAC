@@ -12,7 +12,7 @@ cd "$REPO_ROOT"
 # === Configuration ===
 Framework_name=LTXFM
 freeze_module_list=''
-config_yaml=${CONFIG_YAML:-starVLA/config/training/vla/starvla_ltx_fm.yaml}
+config_yaml=${CONFIG_YAML:-TacPAC/config/training/vla/starvla_ltx_fm.yaml}
 base_video=${BASE_VIDEO:-playground/Pretrained_models/RobotLTXVIdeo/pretrain_ltxvideo_0223_gpu64.pt}
 stage2_checkpoint=${STAGE2_CHECKPOINT:-playground/Pretrained_models/RobotLTXVIdeo/pretrain_ltxqformerfm_wostate.pt}
 run_root_dir=${RUN_ROOT_DIR:-./results/Checkpoints/vla}
@@ -71,9 +71,9 @@ export TORCHINDUCTOR_AUTOGRAD_CACHE=${TORCHINDUCTOR_AUTOGRAD_CACHE:-1}
 mkdir -p "${TORCHINDUCTOR_CACHE_DIR}" "${TRITON_CACHE_DIR}"
 
 accelerate launch \
-  --config_file starVLA/config/deepseeds/deepspeed_zero2.yaml \
+  --config_file TacPAC/config/deepseeds/deepspeed_zero2.yaml \
   ${DISTRIBUTED_ARGS} \
-  starVLA/training/train_starvla.py \
+  TacPAC/training/train_starvla.py \
   --config_yaml ${config_yaml} \
   --framework.name ${Framework_name} \
   --framework.video_model.load_text_encoder ${load_text_encoder} \

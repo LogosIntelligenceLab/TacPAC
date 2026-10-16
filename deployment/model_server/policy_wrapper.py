@@ -27,7 +27,7 @@ from typing import Any, Dict, List, Optional
 import numpy as np
 import torch
 
-from starVLA.model.framework.share_tools import read_mode_config
+from TacPAC.model.framework.share_tools import read_mode_config
 
 from deployment.model_server.inference_loader import load_framework_for_inference
 from deployment.model_server.policy_norm_processor import PolicyNormProcessor

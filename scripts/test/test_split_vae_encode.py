@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from starVLA.model.framework.WM4A.WanMoT import WanMoT, modality_view_counts
+from TacPAC.model.framework.WM4A.WanMoT import WanMoT, modality_view_counts
 
 
 class FakeVAE(nn.Module):

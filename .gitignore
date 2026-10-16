@@ -185,7 +185,8 @@ annotated_image.png
 data_processed
 llavavla/conf/qwenvla_lmdb_3Lpretrain.yaml
 extracted_frames
-starVLA/config/deepseeds/*
+TacPAC/config/deepseeds/*
+!TacPAC/config/deepseeds/*.yaml
 **/bar
 llavavla/model/openvla_temp
 real_deployment/upload/push_model_to_hf.py
@@ -208,20 +209,14 @@ test_image.jpg
 
 scripts/run_scripts/sum2cluter.sh
 
-examples/SimplerEnv/eval_scripts
-
-starVLA/config/frameworks/*
-starVLA/model/modules/sam_model/*
+TacPAC/config/frameworks/*
+TacPAC/model/modules/sam_model/*
 assets/SAMv2.txt
 playground/*
 qwen_talk.md
 assets/R1Pro.py
-examples/SPVLA
-examples/SimplerEnv/eval_files/eval_scripts
-examples/Robotwin/train_files/submit_robotwin_training.sh
-starVLA/dataloader/gr00t_lerobot/datasets_temp.py
+TacPAC/dataloader/gr00t_lerobot/datasets_temp.py
 MUJOCO_LOG.TXT
-examples/MultiRobot/*
 
 AGENTS.md
 
@@ -239,34 +234,19 @@ wandb/*
 
 */**/*.md
 */*.md
-!examples/**/README.md
-!examples/**/README_zh.md
 
 # Whitelist specific docs that should be tracked
 !.github/PULL_REQUEST_TEMPLATE.md
-!docs/branching_strategy.md
-!docs/PR_readme.md
-!docs/CONTRIBUTING.md
-!docs/faq.md
-!docs/model_zoo.md
-!docs/starVLA_guideline.md
-!docs/WM4A.md
 !docs/INSTALL.md
 !docs/deployment/REAL-zh.md
 !deployment/README-zh.md
+!TacPAC/model/modules/vlm/README.md
+!TacPAC/model/modules/vlm/tools/add_qwen_special_tokens/README.md
+!TacPAC/model/modules/world_model/README.md
 
 
 logs/*
 bar
 **/.nf*
 code
-examples/RoboChallenge_table30v2/*
-examples/LIBERO/eval_files/auto_eval_scripts/run_all_libero_untested.sh
-examples/SimplerEnv/eval_files/auto_eval_scripts/auto_collect_results/schedule_widowx_eval.sh
-examples/SimplerEnv/eval_files/auto_eval_scripts/auto_collect_results/summarize_widowx_all.sh
-examples/SimplerEnv/eval_files/auto_eval_scripts/auto_collect_results/summarize_widowx_all.sh
-examples/SimplerEnv/eval_files/auto_eval_scripts/auto_collect_results/summarize_widowx_all.sh
-examples/SimplerEnv/eval_files/auto_eval_scripts/auto_collect_results/schedule_widowx_eval.sh
-examples/SimplerEnv/eval_files/auto_eval_scripts/auto_collect_results/summarize_widowx_all.sh
-examples/SimplerEnv/eval_files/auto_eval_scripts/auto_collect_results/schedule_widowx_eval.sh
-starVLA/model/framework/VLM4A/QwenGR00T_v2.py
+TacPAC/model/framework/VLM4A/QwenGR00T_v2.py

@@ -7,7 +7,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from starVLA.model.framework.base_framework import baseframework
+from TacPAC.model.framework.base_framework import baseframework
 
 
 INFERENCE_CONFIG_OVERRIDES: dict[str, Any] = {

@@ -5,7 +5,7 @@ import unittest
 import numpy as np
 import torch
 
-from starVLA.dataloader.vla.tactile_stress import (
+from TacPAC.dataloader.vla.tactile_stress import (
     TactileInferencePreprocessor,
     compute_stress_baseline,
     stress_map,
@@ -188,7 +188,7 @@ class TactileModeConfigTest(unittest.TestCase):
     def test_base_preprocess_applies_tactile_transform(self):
         import torch.nn as nn
 
-        from starVLA.model.framework.base_framework import baseframework
+        from TacPAC.model.framework.base_framework import baseframework
 
         class IdentityDataConfig:
             input_transform = staticmethod(lambda data: data)

@@ -75,17 +75,19 @@ TacPAC 分两阶段训练：
 
 | 功能 | 路径 |
 | --- | --- |
-| TacPAC 主框架、缓存与修正流程 | `starVLA/model/framework/WM4A/WanMoTJointTacExpert.py` |
-| 单步触觉专家 | `starVLA/model/modules/wan_mot/tactile_expert.py` |
-| 世界-动作 Mixture-of-Transformers | `starVLA/model/modules/wan_mot/` |
-| 训推共用触觉预处理 | `starVLA/dataloader/vla/tactile_stress.py` |
-| LeRobot 数据与执行偏移采样 | `starVLA/dataloader/vla/dataset/` |
-| 训练配置 | `starVLA/config/training/vla/starvla_wam.yaml` |
+| TacPAC 主框架、缓存与修正流程 | `TacPAC/model/framework/WM4A/WanMoTJointTacExpert.py` |
+| 单步触觉专家 | `TacPAC/model/modules/wan_mot/tactile_expert.py` |
+| 世界-动作 Mixture-of-Transformers | `TacPAC/model/modules/wan_mot/` |
+| 训推共用触觉预处理 | `TacPAC/dataloader/vla/tactile_stress.py` |
+| LeRobot 数据与执行偏移采样 | `TacPAC/dataloader/vla/dataset/` |
+| 训练配置 | `TacPAC/config/training/vla/starvla_wam.yaml` |
 | `prepare` / `refine` 有状态推理协议 | `deployment/model_server/server_infersystem.py` |
 
 <a id="安装"></a>
 
 ## 🛠️ 安装
+
+完整依赖与视频解码器配置见[安装指南](docs/INSTALL.md)。
 
 ```bash
 git clone git@github.com:LogosRoboticsGroup/TacPAC.git
@@ -99,7 +101,7 @@ pip install flash-attn --no-build-isolation
 pip install -e .
 ```
 
-下载 Wan2.2 TI2V backbone，并在 `starVLA/config/training/vla/starvla_wam.yaml` 中检查
+下载 Wan2.2 TI2V backbone，并在 `TacPAC/config/training/vla/starvla_wam.yaml` 中检查
 `dit_path`、`vae_path`、`text_encoder_path` 和 `tokenizer_path`。
 
 ## 📦 数据准备
@@ -113,7 +115,7 @@ observation.images.left_wrist_left_tactile
 observation.images.left_wrist_right_tactile
 ```
 
-请在 `starVLA/dataloader/vla/mixtures.py` 中注册本地数据路径及 `video_keys`。包含
+请在 `TacPAC/dataloader/vla/mixtures.py` 中注册本地数据路径及 `video_keys`。包含
 `tactile` 的 key 会被识别为触觉视图。论文使用的私有数据暂未包含在仓库中，在公开发布前
 请将示例 `data_root` 替换为自己的 LeRobot 数据集路径。
 
@@ -121,7 +123,7 @@ observation.images.left_wrist_right_tactile
 
 ```bash
 python scripts/vla/precompute_text_embeds.py \
-  --config_yaml starVLA/config/training/vla/starvla_wam.yaml \
+  --config_yaml TacPAC/config/training/vla/starvla_wam.yaml \
   --datasets.vla_data.data_mix flexiv_plug_4views \
   --datasets.vla_data.text_embedding_cache_dir data/text_embeds_cache/flexiv_plug_4views
 ```
@@ -162,7 +164,8 @@ bash deployment/local_infer-wan-tac.sh
 
 有状态协议包含两个操作：`prepare` 生成新动作块并建立 `plan_id`；`refine` 发送最新触觉视图、
 执行偏移和已执行动作前缀，返回该计划修正后的剩余动作。请求格式见
-`deployment/model_server/README.md` 和 `scripts/test/test_infersystem_stateful_tactile.py`。
+[TacPAC 真机触觉推理指南](docs/deployment/REAL-zh.md)和
+[`test_infersystem_stateful_tactile.py`](scripts/test/test_infersystem_stateful_tactile.py)。
 
 ## 🧪 测试
 

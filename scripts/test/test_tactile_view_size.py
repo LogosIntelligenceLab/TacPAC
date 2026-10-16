@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from starVLA.model.framework.WM4A.WanMoT import WanMoT
+from TacPAC.model.framework.WM4A.WanMoT import WanMoT
 
 
 class FakeVAE(nn.Module):

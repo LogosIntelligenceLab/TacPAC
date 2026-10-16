@@ -18,7 +18,7 @@ cd "$REPO_ROOT"
 # === Configuration ===
 Framework_name=WanMoTJointTacExpert
 freeze_module_list='mot,proprio_encoder'
-config_yaml=starVLA/config/training/vla/starvla_wam.yaml
+config_yaml=TacPAC/config/training/vla/starvla_wam.yaml
 run_root_dir=./results/Checkpoints/vla
 NPROC_PER_NODE=${NPROC_PER_NODE:-8}
 ###########################################################################################
@@ -52,9 +52,9 @@ cp $0 ${output_dir}/
 echo "Logging to ${output_dir}/train.log"
 
 accelerate launch \
-  --config_file starVLA/config/deepseeds/deepspeed_zero2.yaml \
+  --config_file TacPAC/config/deepseeds/deepspeed_zero2.yaml \
   ${DISTRIBUTED_ARGS} \
-  starVLA/training/train_starvla.py \
+  TacPAC/training/train_starvla.py \
   --config_yaml ${config_yaml} \
   --framework.name ${Framework_name} \
   --framework.video_model.load_text_encoder false \

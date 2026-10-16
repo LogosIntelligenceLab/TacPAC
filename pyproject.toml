@@ -70,10 +70,10 @@ exclude = [
     "**__pycache__**",   # Python cache directory
     "*.pyc",         # compiled Python file
     "*.pyo",         # optimized Python file
-    "starVLA.egg-info",
-    "starVLA.egg-info.*",
-    "starVLA.config",
-    "starVLA.config.*",
+    "TacPAC.egg-info",
+    "TacPAC.egg-info.*",
+    "TacPAC.config",
+    "TacPAC.config.*",
 ]
 
 [tool.setuptools.package-data]

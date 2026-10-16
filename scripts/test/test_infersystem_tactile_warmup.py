@@ -8,7 +8,7 @@ import numpy as np
 
 from deployment.model_server.infersystem_protocol import InferSystemAdapterConfig
 from deployment.model_server.server_infersystem import InferSystemPolicyServer
-from starVLA.dataloader.vla.tactile_stress import TactileInferencePreprocessor
+from TacPAC.dataloader.vla.tactile_stress import TactileInferencePreprocessor
 
 
 def _png(gray_level, rng, noise=2.0, size=32):

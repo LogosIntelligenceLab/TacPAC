@@ -29,16 +29,16 @@ from typing import Any, Dict, List, Optional, Sequence
 import numpy as np
 import torch
 
-from starVLA.dataloader.vla.registry import (
+from TacPAC.dataloader.vla.registry import (
     DATASET_NAMED_MIXTURES,
     ROBOT_TYPE_CONFIG_MAP,
 )
-from starVLA.dataloader.vla.schema import (
+from TacPAC.dataloader.vla.schema import (
     DatasetMetadata,
     StateActionMetadata,
 )
-from starVLA.dataloader.vla.transform.base import ComposedModalityTransform
-from starVLA.model.framework.share_tools import read_mode_config
+from TacPAC.dataloader.vla.transform.base import ComposedModalityTransform
+from TacPAC.model.framework.share_tools import read_mode_config
 
 logger = logging.getLogger(__name__)
 

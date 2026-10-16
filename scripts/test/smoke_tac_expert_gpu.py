@@ -13,9 +13,9 @@ import numpy as np
 import torch
 from omegaconf import OmegaConf
 
-from starVLA.model.framework.WM4A.WanMoTJointTacExpert import WanMoTJointTacExpert
+from TacPAC.model.framework.WM4A.WanMoTJointTacExpert import WanMoTJointTacExpert
 
-CONFIG_YAML = "starVLA/config/training/vla/starvla_wam.yaml"
+CONFIG_YAML = "TacPAC/config/training/vla/starvla_wam.yaml"
 SMALL = {"num_layers": 4, "num_heads": 6, "attn_head_dim": 64}
 
 

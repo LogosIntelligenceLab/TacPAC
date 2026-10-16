@@ -28,9 +28,9 @@ from omegaconf import OmegaConf
 
 from deployment.model_server.infersystem_protocol import InferSystemAdapterConfig
 from deployment.model_server.server_infersystem import InferSystemPolicyServer
-from starVLA.model.framework.WM4A.WanMoTJointTacExpert import WanMoTJointTacExpert
+from TacPAC.model.framework.WM4A.WanMoTJointTacExpert import WanMoTJointTacExpert
 
-CONFIG_YAML = "starVLA/config/training/vla/starvla_wam.yaml"
+CONFIG_YAML = "TacPAC/config/training/vla/starvla_wam.yaml"
 RUN_DIR = Path("results/Checkpoints/vla/0725_WanMoTJointTacExpert_flexiv_insert_board_4views")
 STAT_KEY = "flexiv_tac"
 CAMERAS = (

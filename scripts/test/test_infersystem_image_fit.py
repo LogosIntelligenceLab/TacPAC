@@ -18,7 +18,7 @@ from deployment.model_server.infersystem_protocol import (
     infersystem_to_starvla_payload,
     infersystem_to_tactile_payload,
 )
-from starVLA.dataloader.vla.data_config.data_config import FlexivTacDataConfig
+from TacPAC.dataloader.vla.data_config.data_config import FlexivTacDataConfig
 
 
 CAMERAS = ("third_view", "left_wrist_view", "left_tactile", "right_tactile")
@@ -43,7 +43,7 @@ def _config(**kwargs) -> InferSystemAdapterConfig:
 
 class TrainingParityTest(unittest.TestCase):
     """The served frame must be the frame training's transform would have produced. The
-    conversion script bakes the same geometry from `starVLA.dataloader.vla.image_fit`."""
+    conversion script bakes the same geometry from `TacPAC.dataloader.vla.image_fit`."""
 
     def _training_view(self, frame: np.ndarray, image_size: tuple[int, int]) -> np.ndarray:
         config = FlexivTacDataConfig()

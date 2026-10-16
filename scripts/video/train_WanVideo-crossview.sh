@@ -15,7 +15,7 @@ fi
 # === Configuration ===
 Framework_name=MultiViewWanVideo
 freeze_module_list=''
-config_yaml=starVLA/config/training/video/starvla_video_multiview.yaml
+config_yaml=TacPAC/config/training/video/starvla_video_multiview.yaml
 run_root_dir=./results/Checkpoints/video
 NPROC_PER_NODE=${NPROC_PER_NODE:-8}
 ###########################################################################################
@@ -65,9 +65,9 @@ mkdir -p ${TORCHINDUCTOR_CACHE_DIR} ${TRITON_CACHE_DIR}
 
 
 accelerate launch \
-  --config_file starVLA/config/deepseeds/deepspeed_zero2.yaml \
+  --config_file TacPAC/config/deepseeds/deepspeed_zero2.yaml \
   ${DISTRIBUTED_ARGS} \
-  starVLA/training/train_starvla_video.py \
+  TacPAC/training/train_starvla_video.py \
   --config_yaml ${config_yaml} \
   --framework.name ${Framework_name} \
   --datasets.video_data.data_mix ${data_mix} \

@@ -10,17 +10,17 @@ from omegaconf import DictConfig, OmegaConf
 from tqdm import tqdm
 from transformers import AutoTokenizer, T5EncoderModel, T5Tokenizer
 
-from starVLA.dataloader.vla.mixtures import DATASET_NAMED_MIXTURES
-from starVLA.utils.text_embedding_cache import (
+from TacPAC.dataloader.vla.mixtures import DATASET_NAMED_MIXTURES
+from TacPAC.utils.text_embedding_cache import (
     DEFAULT_CONTEXT_LEN,
     DEFAULT_ENCODER_ID,
     DEFAULT_LTX_ENCODER_ID,
     format_text_prompt,
     text_cache_path,
 )
-from starVLA.model.modules.wan_video.wan_dit import WanModelStateDictConverter
-from starVLA.model.modules.wan_video.wan_text_encoder import WanTextEncoder
-from starVLA.training.trainer_utils.trainer_tools import normalize_dotlist_args
+from TacPAC.model.modules.wan_video.wan_dit import WanModelStateDictConverter
+from TacPAC.model.modules.wan_video.wan_text_encoder import WanTextEncoder
+from TacPAC.training.trainer_utils.trainer_tools import normalize_dotlist_args
 
 
 def _init_distributed():
@@ -149,7 +149,7 @@ def _encode_batch(
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config_yaml", default="starVLA/config/training/vla/starvla_wam.yaml")
+    parser.add_argument("--config_yaml", default="TacPAC/config/training/vla/starvla_wam.yaml")
     parser.add_argument("--batch_size", type=int, default=16)
     parser.add_argument("--max_prompts", type=int, default=0)
     parser.add_argument("--encoder_family", choices=["auto", "wan", "ltx"], default="auto")
