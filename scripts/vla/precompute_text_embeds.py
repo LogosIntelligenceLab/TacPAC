@@ -8,13 +8,12 @@ import torch
 import torch.distributed as dist
 from omegaconf import DictConfig, OmegaConf
 from tqdm import tqdm
-from transformers import AutoTokenizer, T5EncoderModel, T5Tokenizer
+from transformers import AutoTokenizer
 
 from TacPAC.dataloader.vla.mixtures import DATASET_NAMED_MIXTURES
 from TacPAC.utils.text_embedding_cache import (
     DEFAULT_CONTEXT_LEN,
     DEFAULT_ENCODER_ID,
-    DEFAULT_LTX_ENCODER_ID,
     format_text_prompt,
     text_cache_path,
 )
@@ -103,25 +102,7 @@ def _build_wan_text_encoder(cfg, device: torch.device, dtype: torch.dtype):
     return text_encoder, tokenizer
 
 
-def _build_ltx_text_encoder(cfg, device: torch.device, dtype: torch.dtype):
-    pretrained = str(cfg.framework.video_model.pretrained_model_name_or_path)
-    tokenizer = T5Tokenizer.from_pretrained(pretrained, subfolder="tokenizer")
-    text_encoder = T5EncoderModel.from_pretrained(
-        pretrained,
-        subfolder="text_encoder",
-        torch_dtype=dtype,
-    ).to(device=device).eval()
-    return text_encoder, tokenizer
-
-
-def _encoder_family(cfg, override: str) -> str:
-    if override != "auto":
-        return override
-    return "ltx" if str(cfg.framework.name) in {"LTXFM", "LTXQformerFM"} else "wan"
-
-
 def _encode_batch(
-    family: str,
     text_encoder,
     tokenizer,
     prompts: list[str],
@@ -139,11 +120,8 @@ def _encode_batch(
     )
     input_ids = tokens.input_ids.to(device)
     mask = tokens.attention_mask.to(device=device, dtype=torch.bool)
-    if family == "wan":
-        context = text_encoder(input_ids, mask=mask).to(dtype=dtype)
-        context = context.masked_fill(~mask[:, :, None], 0)
-    else:
-        context = text_encoder(input_ids)[0].to(dtype=dtype)
+    context = text_encoder(input_ids, mask=mask).to(dtype=dtype)
+    context = context.masked_fill(~mask[:, :, None], 0)
     return context, mask
 
 
@@ -152,7 +130,9 @@ def main():
     parser.add_argument("--config_yaml", default="TacPAC/config/training/vla/starvla_wam.yaml")
     parser.add_argument("--batch_size", type=int, default=16)
     parser.add_argument("--max_prompts", type=int, default=0)
-    parser.add_argument("--encoder_family", choices=["auto", "wan", "ltx"], default="auto")
+    parser.add_argument(
+        "--encoder_family", choices=["auto", "wan"], default="auto", help="auto selects the Wan text encoder"
+    )
     parser.add_argument("--include_uncond", action="store_true")
     parser.add_argument("--overwrite", action="store_true")
     args, overrides = parser.parse_known_args()
@@ -163,13 +143,11 @@ def main():
     rank, world_size, local_rank = _init_distributed()
     device = torch.device(f"cuda:{local_rank}" if torch.cuda.is_available() else "cpu")
     dtype = _parse_dtype(getattr(cfg.framework, "torch_dtype", "bfloat16"))
-    family = _encoder_family(cfg, args.encoder_family)
 
     data_cfg = cfg.datasets.vla_data
     cache_dir = Path(str(data_cfg.text_embedding_cache_dir))
     context_len = int(getattr(data_cfg, "text_context_len", getattr(cfg.framework.video_model, "text_context_len", DEFAULT_CONTEXT_LEN)))
-    default_encoder_id = DEFAULT_LTX_ENCODER_ID if family == "ltx" else DEFAULT_ENCODER_ID
-    encoder_id = str(getattr(data_cfg, "text_cache_encoder_id", default_encoder_id))
+    encoder_id = str(getattr(data_cfg, "text_cache_encoder_id", DEFAULT_ENCODER_ID))
     prompt_template = getattr(
         data_cfg,
         "text_context_prompt_template",
@@ -180,16 +158,13 @@ def main():
         _dataset_roots(str(data_cfg.data_mix)),
         prompt_template=prompt_template,
         max_prompts=args.max_prompts if args.max_prompts > 0 else None,
-        include_uncond=args.include_uncond or family == "ltx",
+        include_uncond=args.include_uncond,
     )
     local_prompts = prompts[rank::world_size]
     if rank == 0:
-        print(f"Text prompts: family={family} total={len(prompts)} world_size={world_size} cache_dir={cache_dir}")
+        print(f"Text prompts: family=wan total={len(prompts)} world_size={world_size} cache_dir={cache_dir}")
 
-    if family == "wan":
-        text_encoder, tokenizer = _build_wan_text_encoder(cfg, device, dtype)
-    else:
-        text_encoder, tokenizer = _build_ltx_text_encoder(cfg, device, dtype)
+    text_encoder, tokenizer = _build_wan_text_encoder(cfg, device, dtype)
     written = 0
     skipped = 0
     iterator = range(0, len(local_prompts), args.batch_size)
@@ -207,7 +182,7 @@ def main():
 
             encode_prompts = [prompt for prompt, should_keep in zip(batch_prompts, keep) if should_keep]
             encode_paths = [path for path, should_keep in zip(cache_paths, keep) if should_keep]
-            context, mask = _encode_batch(family, text_encoder, tokenizer, encode_prompts, device, dtype, context_len)
+            context, mask = _encode_batch(text_encoder, tokenizer, encode_prompts, device, dtype, context_len)
 
             for i, cache_path in enumerate(encode_paths):
                 cache_path.parent.mkdir(parents=True, exist_ok=True)
@@ -217,7 +192,7 @@ def main():
                         "mask": mask[i].detach().cpu().contiguous(),
                         "prompt": encode_prompts[i],
                         "encoder_id": encoder_id,
-                        "family": family,
+                        "family": "wan",
                     },
                     cache_path,
                 )

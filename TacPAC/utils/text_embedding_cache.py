@@ -7,7 +7,6 @@ import torch
 PROMPT_TEMPLATE = "A video recorded from a robot's point of view executing the following instruction: {task}"
 DEFAULT_CONTEXT_LEN = 128
 DEFAULT_ENCODER_ID = "wan22ti2v5b"
-DEFAULT_LTX_ENCODER_ID = "ltx-video-t5"
 
 
 def format_text_prompt(task: str, prompt_template: str | None = None) -> str:
