@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173e40">
+  <title>TacPAC — Tactile Prediction & Real-Time Action Correction</title>
+  <meta name="description" content="TacPAC connects predicted contact with live tactile feedback to correct robot actions in real time. Explore the paper, method, and five real-robot experiments.">
+  <link rel="canonical" href="https://logosroboticsgroup.github.io/TacPAC/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="TacPAC — Predict contact. Correct in real time.">
+  <meta property="og:description" content="Tactile Prediction and Real-Time Action Correction in World-Action Models for Contact-Rich Manipulation.">
+  <meta property="og:url" content="https://logosroboticsgroup.github.io/TacPAC/">
+  <meta property="og:image" content="https://logosroboticsgroup.github.io/TacPAC/assets/demo-poster.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/RobotoMono-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="nav-inner">
+      <a href="#" class="wordmark" aria-label="TacPAC home"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M3 14h5l3-8 6 16 3-8h5"/></svg>Tac<span>PAC</span></a>
+      <nav aria-label="Main navigation"><a href="#overview">Overview</a><a href="#method">Method</a><a href="#experiments">Experiments</a><a href="#results">Results</a></nav>
+      <a class="nav-paper" href="https://arxiv.org/abs/2609.05266" target="_blank" rel="noopener">Read the paper <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="eyebrow"><span class="status-dot"></span> WORLD-ACTION MODELS · REAL-WORLD TOUCH</div>
+      <h1 id="hero-title">Tac<span>PAC</span></h1>
+      <h2>Tactile Prediction and<br class="desktop-break"> Real-Time Action Correction</h2>
+      <p class="hero-subtitle">in World-Action Models for Contact-Rich Manipulation</p>
+      <p class="authors"><span class="author">Zipei Ma<sup>1,2,3</sup></span><span>·</span><span class="author">Xiaofei Wei<sup>1,2</sup></span><span>·</span><span class="author">Junzhe Jiang<sup>1</sup></span><span>·</span><span class="author">Shunlin Lu<sup>3</sup></span><span>·</span><span class="author">Li Zhang<sup>1,2</sup></span></p>
+      <p class="affiliations"><span><sup>1</sup> School of Data Science, Fudan University</span><span><sup>2</sup> Shanghai Innovation Institute</span><span><sup>3</sup> NeoteAI</span></p>
+      <div class="hero-actions">
+        <a class="button primary" href="https://arxiv.org/pdf/2609.05266" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 12h8M8 16h6"/></svg>Paper <span aria-hidden="true">↗</span></a>
+        <a class="button" href="https://github.com/LogosRoboticsGroup/TacPAC" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-15-2 18"/></svg>Code <span aria-hidden="true">↗</span></a>
+        <a class="button" href="#demo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 4 12 8-12 8z"/></svg>Watch demo <span class="duration">3:08</span></a>
+      </div>
+      <div class="hero-gallery" aria-label="Explore the five manipulation tasks">
+        <a href="#experiments" data-select-task="charger_plug"><img src="assets/charger_plug-hero.webp" alt="Robot inserting a charger plug into a socket" fetchpriority="high" width="960" height="540"><span><small>01 / PRECISION</small>Charger plug <b>↗</b></span></a>
+        <a href="#experiments" data-select-task="expansion_card"><img src="assets/expansion_card-hero.webp" alt="Robot aligning an expansion card with a motherboard slot" fetchpriority="high" width="960" height="540"><span><small>02 / ALIGNMENT</small>Expansion card <b>↗</b></span></a>
+        <a href="#experiments" data-select-task="potato_chip"><img src="assets/potato_chip-hero.webp" alt="Robot gently grasping a fragile potato chip" width="960" height="540"><span><small>03 / FRAGILITY</small>Potato chip <b>↗</b></span></a>
+        <a href="#experiments" data-select-task="empty_bottle"><img src="assets/empty_bottle-hero.webp" alt="Robot manipulating an empty plastic bottle" width="960" height="540"><span><small>04 / GRIP CONTROL</small>Empty bottle <b>↗</b></span></a>
+        <a href="#experiments" data-select-task="fruit_transfer"><img src="assets/fruit_transfer-hero.webp" alt="Robot transferring fruit between containers" width="960" height="540"><span><small>05 / LONG HORIZON</small>Fruit transfer <b>↗</b></span></a>
+      </div>
+      <p class="gallery-caption"><span class="mini-line"></span> Five real-world tasks. One prediction-informed tactile feedback loop.</p>
+    </section>
+
+    <div class="metrics-band"><div class="wrap metrics">
+      <div><strong>64<span>%</span></strong><p>Average task success<small>+16 percentage points over T-Rex</small></p></div>
+      <div><strong>30.4<span>ms</span></strong><p>Per tactile correction<small>32.9 Hz with a reusable cache</small></p></div>
+      <div><strong>20.7<span>×</span></strong><p>Lower inference latency<small>Compared with regenerating a chunk</small></p></div>
+    </div></div>
+
+    <section id="overview" class="section wrap">
+      <div class="section-heading"><span class="section-index">01 / OVERVIEW</span><h2>Predict contact.<br><span>Correct in real time.</span></h2></div>
+      <div class="intro-grid"><p class="lead">A robot can plan what happens next.<br>Touch tells it what is happening now.</p><div class="prose"><p>Small contact errors can jam an insertion or break a fragile object. Future tactile predictions provide useful expectations, but those predictions are made before an action chunk begins.</p><p>TacPAC connects this anticipated contact to live tactile feedback. A tactile expert reads each new tactile observation against a cached representation of the prediction and plan, then corrects the actions that have yet to execute. The robot keeps moving throughout.</p></div></div>
+      <div id="demo" class="demo-block">
+        <div class="media-heading"><h3>The full story, in three minutes.</h3><span class="mono">PROJECT DEMO / 03:08</span></div>
+        <video id="demo-video" class="demo-video" controls playsinline preload="none" poster="assets/demo-poster.webp" aria-label="TacPAC full project demonstration"><source src="assets/videos/tacpac-demo.mp4" type="video/mp4"><a href="assets/videos/tacpac-demo.mp4">Download the demonstration video</a></video>
+        <div class="chapters" aria-label="Demo chapters"><button data-time="0"><span>00:00</span> Introduction</button><button data-time="30"><span>00:30</span> Method</button><button data-time="72"><span>01:12</span> Experiments</button><button data-time="147"><span>02:27</span> Results</button></div>
+      </div>
+    </section>
+
+    <section id="method" class="section muted-section">
+      <div class="wrap">
+        <div class="section-heading"><span class="section-index">02 / METHOD</span><h2>From expected contact<br>to corrected action.</h2><p>Plan once per chunk. Read new touch against the plan. Update what comes next.</p></div>
+        <figure class="paper-figure"><button class="zoom-figure" data-figure="assets/pipeline.webp" data-caption="TacPAC architecture: a tactile-predictive base model and a cache-conditioned tactile expert." aria-label="Enlarge the TacPAC architecture diagram"><img src="assets/pipeline.webp" alt="Stage 1 jointly predicts future visual and tactile observations and planned actions. Stage 2 uses the tactile-action KV cache and live tactile input to predict delta actions." loading="lazy" width="1800" height="686"><span class="zoom-hint">Enlarge ↗</span></button><figcaption>TacPAC architecture. The base model predicts and plans; the tactile expert corrects the plan during execution.</figcaption></figure>
+        <div class="method-steps">
+          <article><span class="step-number">01</span><h3>Predict & plan</h3><p>A video expert predicts future visual and tactile observations while an action expert jointly generates an action chunk.</p></article>
+          <article><span class="step-number">02</span><h3>Cache the expectation</h3><p>A clean prefill pass stores predicted tactile and action representations as a reusable, layer-wise key–value cache.</p></article>
+          <article><span class="step-number">03</span><h3>Correct with live touch</h3><p>Each new tactile frame triggers one expert pass, producing delta actions for the unexecuted part of the chunk.</p></article>
+        </div>
+        <div class="inference-grid"><div><span class="section-index">ASYNCHRONOUS EXECUTION</span><h3>The plan updates.<br>The robot keeps moving.</h3><p>Corrections respect the execution clock: actions already sent remain fixed. New updates start beyond a short latency window, revising only the remaining action sequence.</p></div><figure><button class="zoom-figure" data-figure="assets/inference.webp" data-caption="Corrections begin at m + d, after the execution offset m and measured latency window d." aria-label="Enlarge the asynchronous execution diagram"><img src="assets/inference.webp" alt="Action chunk divided into executed, executing, and to-be-corrected steps, with boundaries at 0, m, m plus d, and H." loading="lazy" width="1600" height="429"></button><figcaption><span>m</span> observation offset &nbsp;·&nbsp; <span>d</span> latency window &nbsp;·&nbsp; <span>H</span> chunk horizon</figcaption></figure></div>
+      </div>
+    </section>
+
+    <section id="experiments" class="section wrap">
+      <div class="section-heading"><span class="section-index">03 / REAL-ROBOT EXPERIMENTS</span><h2>Contact makes the difference.</h2><p>Explore complete rollouts across precision insertion, fragile-object handling, and force-sensitive manipulation.</p></div>
+      <div class="task-tabs" role="tablist" aria-label="Manipulation task">
+        <button id="tab-charger_plug" role="tab" aria-selected="true" aria-controls="task-panel" data-task="charger_plug">01 <span>Charger plug</span></button>
+        <button id="tab-expansion_card" role="tab" aria-selected="false" aria-controls="task-panel" tabindex="-1" data-task="expansion_card">02 <span>Expansion card</span></button>
+        <button id="tab-potato_chip" role="tab" aria-selected="false" aria-controls="task-panel" tabindex="-1" data-task="potato_chip">03 <span>Potato chip</span></button>
+        <button id="tab-empty_bottle" role="tab" aria-selected="false" aria-controls="task-panel" tabindex="-1" data-task="empty_bottle">04 <span>Empty bottle</span></button>
+        <button id="tab-fruit_transfer" role="tab" aria-selected="false" aria-controls="task-panel" tabindex="-1" data-task="fruit_transfer">05 <span>Fruit transfer</span></button>
+      </div>
+      <div id="task-panel" role="tabpanel" aria-labelledby="tab-charger_plug">
+        <div class="task-heading"><div><h3 id="task-title">Charger-plug insertion</h3><p id="task-description">Precise alignment under constrained contact.</p></div><div class="playback-tools"><button id="play-all" class="button small">▶ Play all</button><button id="restart-all" class="icon-button" aria-label="Restart all three rollouts" title="Restart all">↺</button><label class="speed-label">Speed <select id="playback-speed" aria-label="Playback speed for all comparison videos"><option value="1">1×</option><option value="2">2×</option><option value="4" selected>4×</option><option value="8">8×</option></select></label></div></div>
+        <div id="comparison-videos" class="comparison-grid"></div>
+        <p class="experiment-note"><span class="note-marker">i</span><span>Videos show selected successful or failed rollouts, not all trials. Success rates summarize <strong>20 trials per method per task</strong>. Speed applies equally to all three videos; each stops at its final frame.</span></p>
+        <p id="playback-status" role="status" class="sr-only"></p>
+      </div>
+      <details class="setup-details"><summary><span>Inside the experimental setup</span><span class="mono">ROBOT + SENSORS <b>+</b></span></summary><div class="setup-content"><img src="assets/setup.webp" alt="Flexiv Rizon 4 robot with wrist-mounted RealSense D405 and third-person RealSense D435i cameras." loading="lazy" width="1600" height="1000"><div><h3>One arm. Vision and touch.</h3><p>A Flexiv Rizon 4 uses two InTac S1 tactile sensors in its gripper, a wrist-mounted Intel RealSense D405, and a third-person Intel RealSense D435i.</p><p>TacPAC takes a task instruction, two camera views, proprioception, and two tactile views. All methods are evaluated on the same five tasks with 20 trials per task.</p><a class="text-link" href="https://arxiv.org/pdf/2609.05266" target="_blank" rel="noopener">Full evaluation protocol in the paper ↗</a></div></div></details>
+    </section>
+
+    <section id="results" class="section muted-section"><div class="wrap">
+      <div class="section-heading"><span class="section-index">04 / RESULTS</span><h2>Better across all five tasks.</h2><p>64% average success, with prediction and correction working together.</p></div>
+      <div class="results-grid"><div class="result-chart"><div class="chart-header"><h3>Average success rate</h3><span class="mono">HIGHER IS BETTER ↑</span></div><div id="average-chart" aria-label="Average success rate by method"></div><p class="chart-footnote">Five tasks · 20 trials per task · Paper, Figure 4</p></div><div class="ablation-chart"><div class="chart-header"><h3>Every component matters</h3><span class="mono">ABLATION STUDY</span></div><div id="ablation-chart" aria-label="Average success rate in the component ablation"></div><p class="chart-footnote">Prediction alone: 37%. Full TacPAC: 64%.<br>Direct access to the tactile cache adds 17 percentage points.</p></div></div>
+      <details class="results-details"><summary><span>See all per-task success rates</span><span class="mono">7 METHODS / 5 TASKS <b>+</b></span></summary><div class="table-scroll"><table><caption>Episode success rate (%), 20 trials per method per task. Source: paper, Figure 4.</caption><thead><tr><th scope="col">Method</th><th scope="col">Plug</th><th scope="col">Fruit</th><th scope="col">Chip</th><th scope="col">Bottle</th><th scope="col">Card</th><th scope="col">Average</th></tr></thead><tbody id="results-table"></tbody></table></div></details>
+      <a class="text-link source-link" href="https://arxiv.org/pdf/2609.05266" target="_blank" rel="noopener">Results and ablations from the paper, Figure 4 & Tables 1–2 ↗</a>
+    </div></section>
+
+    <section id="citation" class="section wrap citation-section"><div><span class="section-index">05 / CITATION</span><h2>Build on TacPAC.</h2><p>If you find this work useful,<br>please consider citing our paper.</p><a class="text-link" href="https://github.com/LogosRoboticsGroup/TacPAC" target="_blank" rel="noopener">Explore the code ↗</a></div><div class="citation-box"><div class="citation-toolbar"><span class="mono">BIBTEX</span><button id="copy-citation" class="copy-button">Copy citation <span aria-hidden="true">⧉</span></button><span id="copy-status" role="status" class="sr-only"></span></div><pre><code id="bibtex">@article{ma2026tacpac,
+  title={TacPAC: Tactile Prediction and Real-Time Action
+         Correction in World-Action Models for
+         Contact-Rich Manipulation},
+  author={Ma, Zipei and Wei, Xiaofei and Jiang, Junzhe
+          and Lu, Shunlin and Zhang, Li},
+  journal={arXiv preprint arXiv:2609.05266},
+  year={2026},
+  url={https://arxiv.org/abs/2609.05266}
+}</code></pre></div></section>
+  </main>
+  <footer class="site-footer wrap"><a href="#" class="wordmark">Tac<span>PAC</span></a><p>Fudan University · Shanghai Innovation Institute · NeoteAI</p><a href="https://arxiv.org/abs/2609.05266" target="_blank" rel="noopener">arXiv:2609.05266 ↗</a></footer>
+  <dialog id="figure-dialog"><button id="close-figure" class="button small" autofocus>Close <span aria-hidden="true">×</span></button><img id="expanded-figure" alt=""><p id="expanded-caption"></p></dialog>
+</body>
+</html>

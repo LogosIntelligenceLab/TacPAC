@@ -3,6 +3,7 @@
 <p align="center"><strong>Tactile Prediction and Real-Time Action Correction in World-Action Models<br>for Contact-Rich Manipulation</strong></p>
 
 <p align="center">
+  <a href="https://logosroboticsgroup.github.io/TacPAC/">Project page</a> ·
   <a href="README-zh.md">中文</a> ·
   <a href="#installation">Installation</a> ·
   <a href="#training">Training</a> ·

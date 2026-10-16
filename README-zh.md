@@ -3,6 +3,7 @@
 <p align="center"><strong>面向接触密集型操作的触觉预测与实时动作修正世界-动作模型</strong></p>
 
 <p align="center">
+  <a href="https://logosroboticsgroup.github.io/TacPAC/">项目主页</a> ·
   <a href="README.md">English</a> ·
   <a href="#安装">安装</a> ·
   <a href="#训练">训练</a> ·

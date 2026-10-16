@@ -250,3 +250,7 @@ bar
 **/.nf*
 code
 TacPAC/model/framework/VLM4A/QwenGR00T_v2.py
+
+# Public project-page assets and maintenance guide
+!docs/assets/videos/*.mp4
+!docs/WEBSITE.md
