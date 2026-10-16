@@ -17,12 +17,12 @@
   <link rel="preload" href="assets/RobotoMono-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="tactile-wordmark.css?v=full-glyphs">
-  <link rel="stylesheet" href="visualizations.css?v=flow-packets">
+  <link rel="stylesheet" href="visualizations.css?v=bar-hover">
   <script src="app.js" defer></script>
   <script src="tactile-wordmark.js" defer></script>
   <script src="phase-data.js" defer></script>
   <script src="trace-data.js" defer></script>
-  <script src="visualizations.js?v=flow-autoplay" defer></script>
+  <script src="visualizations.js?v=charts-autoplay" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -142,13 +142,13 @@
           <article><span class="step-number">03</span><h3>Correct with live touch</h3><p>Each new tactile frame triggers one expert pass, producing delta actions for the unexecuted part of the chunk.</p></article>
         </div>
         <div class="native-inference interactive-figure" id="inference">
-          <div class="figure-topline"><span class="mono">FIGURE 3 / ASYNCHRONOUS INFERENCE</span><button id="inference-play" class="button small" aria-pressed="false">▶ Run sequence</button></div>
+          <div class="figure-topline"><span class="mono">FIGURE 3 / ASYNCHRONOUS INFERENCE</span></div>
           <div class="inference-intro"><h3>The plan updates.<br>The robot keeps moving.</h3><p>Observe at <b>m</b>. Compute while the arm moves. Apply the delta only from <b>m + d</b> onward.</p></div>
           <div class="timeline-legend"><span><i class="executed"></i>Already executed</span><span><i class="latency"></i>Committed during latency</span><span><i class="future"></i>Eligible for correction</span></div>
           <div class="action-timeline" id="action-timeline" role="img" aria-label="48-step action chunk"></div>
           <div class="timeline-axis"><span>0</span><span id="timeline-m">m = 16</span><span id="timeline-boundary">m + d = 18</span><span>H = 48</span></div>
           <div class="timeline-controls"><label>Observation offset <b>m = <output id="offset-value">16</output></b><input id="offset-slider" aria-label="Observation offset m" type="range" min="0" max="47" value="16"></label><label>Latency window <b>d = <output id="latency-value">2</output> steps</b><input id="latency-slider" aria-label="Latency window d in action steps" type="range" min="0" max="8" value="2"></label></div>
-          <div class="inference-status"><span class="status-dot"></span><p id="inference-status" role="status">32 actions remain; the correction can update 30 actions after the 2-step latency window.</p><strong id="correction-count">30<span> / 48 actions</span></strong></div>
+          <div class="inference-status"><span class="status-dot"></span><p id="inference-status" role="status" aria-live="off">32 actions remain; the correction can update 30 actions after the 2-step latency window.</p><strong id="correction-count">30<span> / 48 actions</span></strong></div>
           <p class="chart-footnote">Interactive timing illustration, slowed for clarity. H = 48; robot control = 30 Hz. d is measured from recent correction latency, not fixed. The paper reports d = 0 for most execution; only 1.6% of calls span ≥1 control step.</p>
         </div>
       </div>
@@ -203,7 +203,7 @@
         <div class="trace-filmstrip"><span class="mono">VISION</span><img id="trace-visual" src="assets/diagrams/trace-charger_plug-visual.webp" alt="Six visual observations from a successful charger-plug rollout" loading="lazy" width="3865" height="360"><span class="mono">TOUCH</span><img id="trace-tactile" src="assets/diagrams/trace-charger_plug-tactile.webp" alt="Corresponding tactile observations" loading="lazy" width="3865" height="360"></div>
         <div class="trace-legend chart-legend"><span><i style="--color:#cfd8de"></i>Approach</span><span><i style="--color:#e8a44f"></i>Contact transition</span><span><i style="--color:#a9cbd8"></i>Sustained contact</span><span><i style="--color:#d8d2c6"></i>Post-contact</span></div>
         <div class="chart-scroll" tabindex="0" role="region" aria-label="Tactile activity and gripper width over time"><div id="execution-trace-chart"></div></div>
-        <div class="trace-tools"><button id="trace-play" class="button small" aria-pressed="false">▶ Replay trace</button><label for="trace-cursor">Explore time</label><input id="trace-cursor" type="range" min="0" max="1000" value="0"><output id="trace-readout">0.0 s</output></div>
+        <div class="trace-tools"><label for="trace-cursor">Explore time</label><input id="trace-cursor" type="range" min="0" max="1000" value="0"><output id="trace-readout" aria-live="off">0.0 s</output></div>
         <p id="trace-criterion" class="trace-criterion"></p>
         <p class="chart-footnote">Dark line: tactile activity cₜ (left axis). Rust line: measured gripper width (right axis). Curves preserve the original PDF vector paths. <a class="text-link" href="data/execution-traces.json" download>Download trace geometry ↓</a> The representative training-episode trace and the successful-rollout image strip are from separate episodes, as stated in the supplement; the time cursor applies to the trace only.</p>
       </article>

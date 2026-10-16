@@ -36,4 +36,4 @@ Figure 4 includes all seven methods, all five tasks, and the average. Table 1 in
 
 Figures 7–11 preserve the original tactile-activity and gripper-width vector paths, phase boundaries, axes, and the two image strips per task. As in the supplement, the representative training trace and successful-rollout photographs are separate episodes. The replay cursor applies only to the trace. Figure 6 remains the real setup photograph.
 
-Animations pause offscreen; motion controls and `prefers-reduced-motion` are supported. The grouped SVG bar charts have keyboard tooltips; exact results and approximate phase values are also available in tables. Wide charts scroll inside their own containers on phones.
+The teaser signals, pipeline, inference sequence, and trace replay loop automatically while visible, without play/pause buttons. They pause offscreen and honor `prefers-reduced-motion`. All result bars support hover enlargement and keyboard focus with value tooltips; only bar thickness grows, so the data scale and error bars remain accurate. Exact results and approximate phase values are also available in tables. Wide charts scroll inside their own containers on phones.

@@ -21,3 +21,30 @@
 .flow-packet-halo{fill:#c2764d;fill-opacity:.2}
 .flow-packet-core{fill:#c2764d;stroke:#fff;stroke-width:1}
 @media(prefers-reduced-motion:reduce){.flow-packet{display:none}}
+
+/* Enlarge across the value axis so bar lengths, heights, and error bars stay true. */
+.data-chart .chart-bar {
+  scale: 1 1;
+  transition: scale 180ms ease, filter 180ms ease, opacity 250ms ease;
+}
+.data-chart .chart-bar:is(:hover,:focus-visible) {
+  scale: 1.2 1;
+  filter: brightness(1.06) drop-shadow(0 2px 3px #16353938);
+}
+#ablation-chart .bar-fill,
+#efficiency-chart .efficiency-track i {
+  scale: 1 1;
+  transform-origin: left center;
+  transition: scale 180ms ease, filter 180ms ease, width 600ms ease;
+}
+#efficiency-chart .efficiency-track { overflow: visible; }
+#ablation-chart .bar-fill:is(:hover,:focus-visible),
+#efficiency-chart .efficiency-track i:is(:hover,:focus-visible) {
+  scale: 1 1.55;
+  filter: brightness(1.06) drop-shadow(0 2px 3px #16353938);
+}
+#ablation-chart .bar-fill:focus-visible,
+#efficiency-chart .efficiency-track i:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}

@@ -26,7 +26,8 @@
   }
   window.addEventListener('scroll',()=>tooltip.hidden=true,{passive:true});
   function barMarkup(name,value,ours,max=100,suffix='%'){
-    return `<div class="bar-row ${ours?'ours':''}"><span class="bar-label">${escape(name)}</span><div class="bar-track" aria-hidden="true"><div class="bar-fill" style="width:${value/max*100}%"></div></div><span class="bar-value">${value}${suffix}</span></div>`;
+    const tip=escape(`${name}: ${value}${suffix}`);
+    return `<div class="bar-row ${ours?'ours':''}"><span class="bar-label">${escape(name)}</span><div class="bar-track"><div class="bar-fill" style="width:${value/max*100}%" tabindex="0" role="img" aria-label="${tip}" data-tip="${tip}"></div></div><span class="bar-value">${value}${suffix}</span></div>`;
   }
   // Teaser evidence uses the embedded photographs in the supplied editable PDF.
   qa('[data-teaser]').forEach(button=>button.addEventListener('click',()=>{
@@ -36,10 +37,8 @@
     q('#teaser-ablation').textContent=chip?'Without tactile prediction':'Without tactile correction';
     qa('[data-teaser]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
   }));
-  const teaserControl=document.createElement('button');teaserControl.className='button small';teaserControl.id='teaser-motion';q('#teaser .figure-topline').appendChild(teaserControl);
-  let teaserMoving=!reducedMotion.matches;
-  function setTeaserMotion(){q('#teaser').classList.toggle('motion-paused',!teaserMoving);q('.concept-svg')[teaserMoving?'unpauseAnimations':'pauseAnimations']();teaserControl.textContent=teaserMoving?'Ⅱ Pause animation':'▶ Animate signals';teaserControl.setAttribute('aria-pressed',String(teaserMoving));}
-  teaserControl.addEventListener('click',()=>{teaserMoving=!teaserMoving;setTeaserMotion();});setTeaserMotion();
+  function syncTeaserMotion(){const moving=!reducedMotion.matches&&!document.hidden&&q('#teaser').classList.contains('in-view');q('#teaser').classList.toggle('motion-paused',!moving);q('.concept-svg')[moving?'unpauseAnimations':'pauseAnimations']();}
+  syncTeaserMotion();
   // Explicit sequential steps make the architecture readable without animation.
   const flowSteps=[
     ['Predict and plan together.','The video and action experts jointly generate future visual and tactile observations and an action chunk through shared self-attention.'],
@@ -71,7 +70,7 @@
   qa('[data-flow-step]').forEach(b=>b.addEventListener('click',()=>{setFlow(Number(b.dataset.flowStep));syncPipelineMotion();}));
   setFlow(0);syncPipelineMotion();
   // Execution timing uses the paper's horizon. d is an illustrative, user-controlled window.
-  let inferencePlaying=false,inferencePhase=0;
+  let inferencePhase=0;
   function renderTimeline(){
     const m=+q('#offset-slider').value,d=Math.min(+q('#latency-slider').value,48-m),boundary=m+d;
     q('#latency-slider').max=String(Math.min(8,48-m));q('#latency-slider').value=d;q('#offset-value').value=m;q('#latency-value').value=d;
@@ -83,10 +82,8 @@
     const descriptions=[`${48-m} actions remain; the correction can update ${48-boundary} actions after the ${d}-step latency window.`,`Computing from touch at m = ${m}. The robot continues executing ${d} committed ${d===1?'action':'actions'}.`,boundary===48?'The latency window reaches H. No remaining actions can be corrected in this chunk.':`Correction applied to actions ${boundary}–47. The first ${boundary} committed actions stay fixed.`];
     q('#inference-status').textContent=descriptions[inferencePhase];
   }
-  function stopInference(){inferencePlaying=false;q('#inference-play').textContent='▶ Run sequence';q('#inference-play').setAttribute('aria-pressed','false');}
-  ['#offset-slider','#latency-slider'].forEach(id=>q(id).addEventListener('input',()=>{stopInference();inferencePhase=0;renderTimeline();}));
-  q('#inference-play').addEventListener('click',()=>{inferencePlaying=!inferencePlaying;q('#inference-play').textContent=inferencePlaying?'Ⅱ Pause sequence':'▶ Run sequence';q('#inference-play').setAttribute('aria-pressed',String(inferencePlaying));if(inferencePlaying){inferencePhase=0;renderTimeline();}});
-  setInterval(()=>{if(!inferencePlaying||document.hidden||!q('#inference').classList.contains('in-view'))return;inferencePhase=(inferencePhase+1)%3;if(inferencePhase===0){const m=+q('#offset-slider').value;q('#offset-slider').value=m>=40?0:m+4;}renderTimeline();},1600);renderTimeline();
+  ['#offset-slider','#latency-slider'].forEach(id=>q(id).addEventListener('input',()=>{inferencePhase=0;renderTimeline();}));
+  setInterval(()=>{if(reducedMotion.matches||document.hidden||!q('#inference').classList.contains('in-view'))return;inferencePhase=(inferencePhase+1)%3;if(inferencePhase===0){const m=+q('#offset-slider').value;q('#offset-slider').value=m>=40?0:m+4;}renderTimeline();},1600);renderTimeline();
   // Figure 4: original success rates, always on a 0–100% scale.
   q('#method-highlight').innerHTML+=results.map((r,i)=>`<option value="${i}">${escape(r.name)}</option>`).join('');
   q('#main-legend').innerHTML=results.map((r,i)=>`<span><i style="--color:${methodColors[i]}"></i>${escape(r.name)}</span>`).join('');
@@ -105,7 +102,7 @@
   const pathCell=v=>v===null?'<td aria-label="No corrector">–</td>':`<td class="${v?'pathway-yes':'pathway-no'}" aria-label="${v?'Enabled':'Removed'}">${v?'✓':'×'}</td>`;
   q('#pathway-table').innerHTML=`<table><thead><tr><th scope="col">Variant</th><th scope="col">Predict</th><th scope="col">Correct</th><th scope="col">Tac. cache</th></tr></thead><tbody>${componentRows.map(r=>`<tr><th scope="row">${r.short}</th>${r.paths.map(pathCell).join('')}</tr>`).join('')}</tbody></table>`;
   q('#ablation-table').innerHTML=componentRows.map(r=>`<tr class="${r.ours?'ours':''}"><th scope="row">${r.name}</th>${r.paths.map(pathCell).join('')}${r.values.map(v=>`<td>${v}</td>`).join('')}</tr>`).join('');
-  function renderAblations(){const t=+q('#ablation-task').value;q('#ablation-chart').innerHTML=componentRows.map(r=>barMarkup(r.name,r.values[t],r.ours)).join('');q('#ablation-chart').setAttribute('aria-label',`Component ablation: ${taskNames[t]} success rate`);}
+  function renderAblations(){const t=+q('#ablation-task').value;q('#ablation-chart').innerHTML=componentRows.map(r=>barMarkup(r.name,r.values[t],r.ours)).join('');q('#ablation-chart').setAttribute('aria-label',`Component ablation: ${taskNames[t]} success rate`);attachTooltips(q('#ablation-chart'));}
   q('#ablation-task').addEventListener('change',renderAblations);renderAblations();
   // Figure 5: recover bars and their published error geometry, with explicit provenance.
   let phaseHighlight=-1;
@@ -122,11 +119,11 @@
   q('#phase-data-table').innerHTML=`<table><caption>Figure 5 digitized values (approximate). Error extents are in the downloadable data.</caption><thead><tr><th scope="col">Task</th><th scope="col">Phase</th><th scope="col">Relative change</th><th scope="col">Frames (%)</th></tr></thead><tbody>${taskNames.slice(0,5).map((n,t)=>phaseNames.map((p,i)=>`<tr><th scope="row">${n}</th><td>${p}</td><td>≈${phaseData.change.find(d=>d.task===t&&d.phase===i).value.toFixed(2)}</td><td>≈${phaseData.frames.find(d=>d.task===t&&d.phase===i).value.toFixed(1)}</td></tr>`).join('')).join('')}</tbody></table>`;
   // Table 2: a common linear scale retains the true speed difference.
   const efficiency=[{name:'Chunk generation',latency:628.6,rate:1.59},{name:'Cache prefill',latency:62.6,rate:15.97},{name:'Tactile correction',latency:30.4,rate:32.90}];
-  function renderEfficiency(metric){const max=metric==='latency'?700:35,unit=metric==='latency'?'ms':'Hz';q('#efficiency-chart').innerHTML=efficiency.map(d=>`<div class="efficiency-row"><div class="efficiency-label"><span>${d.name}</span><strong>${d[metric].toFixed(metric==='latency'?1:2)} ${unit}</strong></div><div class="efficiency-track" aria-hidden="true"><i style="--value:${d[metric]/max*100}%"></i></div></div>`).join('')+`<p class="chart-footnote">Linear scale: 0–${max} ${unit}. ${metric==='latency'?'Lower is better.':'Higher is better.'}</p>`;qa('[data-latency-metric]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.latencyMetric===metric)));}
+  function renderEfficiency(metric){const max=metric==='latency'?700:35,unit=metric==='latency'?'ms':'Hz';q('#efficiency-chart').innerHTML=efficiency.map(d=>{const value=`${d[metric].toFixed(metric==='latency'?1:2)} ${unit}`,tip=escape(`${d.name}: ${value}`);return `<div class="efficiency-row"><div class="efficiency-label"><span>${d.name}</span><strong>${value}</strong></div><div class="efficiency-track"><i style="--value:${d[metric]/max*100}%" tabindex="0" role="img" aria-label="${tip}" data-tip="${tip}"></i></div></div>`;}).join('')+`<p class="chart-footnote">Linear scale: 0–${max} ${unit}. ${metric==='latency'?'Lower is better.':'Higher is better.'}</p>`;qa('[data-latency-metric]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.latencyMetric===metric)));attachTooltips(q('#efficiency-chart'));}
   qa('[data-latency-metric]').forEach(b=>b.addEventListener('click',()=>renderEfficiency(b.dataset.latencyMetric)));renderEfficiency('latency');
   // Supplement: native SVG paths retain every segment from the published traces.
   const criteria={charger_plug:'Figure 7 · Success: the plug is seated in the target outlet.',fruit_transfer:'Figure 8 · Success: all three fruits reach the tray without visible damage.',potato_chip:'Figure 9 · Success: the chip reaches the target plate without visible damage.',empty_bottle:'Figure 10 · Success: the bottle remains stably upright after release.',expansion_card:'Figure 11 · Success: the card is seated in the target slot.'};
-  let currentTrace=executionTraces[0],tracePlaying=false;
+  let currentTrace=executionTraces[0];
   const tx=v=>70+v*920,ty=v=>40+v*220;
   function traceDuration(){const ticks=currentTrace.ticks.x;const a=ticks[0],b=ticks[ticks.length-1];return (+b[1]- +a[1])/(b[0]-a[0]);}
   function traceCursor(){const f=+q('#trace-cursor').value/1000,el=q('#trace-moving-cursor');if(el)el.setAttribute('transform',`translate(${tx(f)},0)`);q('#trace-readout').value=(f*traceDuration()).toFixed(1)+' s';}
@@ -142,12 +139,11 @@
     body+=svgText(530,316,'Time (s)','axis-title','middle')+`<g id="trace-moving-cursor" transform="translate(70,0)"><line x1="0" x2="0" y1="35" y2="264" class="trace-cursor-line"/><path d="M-5 29H5L0 37Z" fill="#173e40"/></g>`;
     q('#execution-trace-chart').innerHTML=`<svg class="data-chart" viewBox="0 0 1060 328" role="img" aria-label="Figure ${t.figure}, ${tasks[t.key].title}: tactile activity and measured gripper width during a representative training episode">${body}</svg>`;q('#trace-cursor').value=0;traceCursor();
   }
-  function setTracePlay(playing){tracePlaying=playing;q('#trace-play').textContent=playing?'Ⅱ Pause trace':'▶ Replay trace';q('#trace-play').setAttribute('aria-pressed',String(playing));}
-  q('#trace-task').addEventListener('change',()=>{setTracePlay(false);renderTrace();});q('#trace-cursor').addEventListener('input',()=>{setTracePlay(false);traceCursor();});q('#trace-play').addEventListener('click',()=>{setTracePlay(!tracePlaying);if(tracePlaying&&+q('#trace-cursor').value>=1000)q('#trace-cursor').value=0;});
-  setInterval(()=>{if(!tracePlaying||document.hidden||!q('#trace-results').classList.contains('in-view'))return;const n=Math.min(1000,+q('#trace-cursor').value+3);q('#trace-cursor').value=n;traceCursor();if(n===1000)setTracePlay(false);},35);renderTrace();
+  q('#trace-task').addEventListener('change',renderTrace);q('#trace-cursor').addEventListener('input',traceCursor);
+  setInterval(()=>{if(reducedMotion.matches||document.hidden||!q('#trace-results').classList.contains('in-view'))return;const current=+q('#trace-cursor').value;q('#trace-cursor').value=current>=1000?0:Math.min(1000,current+3);traceCursor();},35);renderTrace();
   // Pause offscreen work and honor the OS motion preference.
-  const visibleObserver=new IntersectionObserver(entries=>{entries.forEach(e=>{e.target.classList.toggle('in-view',e.isIntersecting);if(e.isIntersecting)e.target.classList.add('has-entered');if(e.target.id==='teaser')q('.concept-svg')[e.isIntersecting&&teaserMoving?'unpauseAnimations':'pauseAnimations']();if(e.target.id==='pipeline')syncPipelineMotion();});},{threshold:0});
+  const visibleObserver=new IntersectionObserver(entries=>{entries.forEach(e=>{e.target.classList.toggle('in-view',e.isIntersecting);if(e.isIntersecting)e.target.classList.add('has-entered');if(e.target.id==='teaser')syncTeaserMotion();if(e.target.id==='pipeline')syncPipelineMotion();});},{threshold:0});
   qa('.interactive-figure,.native-teaser,.result-panel').forEach(el=>visibleObserver.observe(el));
-  reducedMotion.addEventListener('change',()=>{if(reducedMotion.matches){teaserMoving=false;setTeaserMotion();stopInference();setTracePlay(false);}syncPipelineMotion();});
-  document.addEventListener('visibilitychange',()=>{if(document.hidden){q('.concept-svg').pauseAnimations();tooltip.hidden=true;}else if(teaserMoving&&q('#teaser').classList.contains('in-view'))q('.concept-svg').unpauseAnimations();syncPipelineMotion();});
+  reducedMotion.addEventListener('change',()=>{syncTeaserMotion();syncPipelineMotion();});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)tooltip.hidden=true;syncTeaserMotion();syncPipelineMotion();});
 })();
