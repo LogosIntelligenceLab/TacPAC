@@ -22,6 +22,9 @@
 .flow-packet-core{fill:#c2764d;stroke:#fff;stroke-width:1}
 @media(prefers-reduced-motion:reduce){.flow-packet{display:none}}
 
+#ablation-chart .bar-track,
+#ablation-chart .bar-fill { border-radius: 3px; }
+
 /* Enlarge across the value axis so bar lengths, heights, and error bars stay true. */
 .data-chart .chart-bar {
   scale: 1 1;
