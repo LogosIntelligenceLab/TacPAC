@@ -13,11 +13,13 @@
   <meta property="og:url" content="https://logosroboticsgroup.github.io/TacPAC/">
   <meta property="og:image" content="https://logosroboticsgroup.github.io/TacPAC/assets/demo-poster.webp">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.svg?v=contact-loop" type="image/svg+xml">
   <link rel="preload" href="assets/RobotoMono-Regular.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="tactile-wordmark.css">
   <link rel="stylesheet" href="visualizations.css">
   <script src="app.js" defer></script>
+  <script src="tactile-wordmark.js" defer></script>
   <script src="phase-data.js" defer></script>
   <script src="trace-data.js" defer></script>
   <script src="visualizations.js" defer></script>
@@ -26,7 +28,7 @@
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <div class="nav-inner">
-      <a href="#" class="wordmark" aria-label="TacPAC home"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M3 14h5l3-8 6 16 3-8h5"/></svg>Tac<span>PAC</span></a>
+      <a href="#" class="wordmark" aria-label="TacPAC home"><svg viewBox="0 0 32 32" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9a11 11 0 0 1 19 1m0-5v5h-5"/><path d="M10 15H5v12h5m12-12h5v12h-5" stroke-width="2.5"/><circle cx="16" cy="21" r="3.5" fill="#c2764d" stroke="none"/></svg>Tac<span>PAC</span></a>
       <nav aria-label="Main navigation"><a href="#overview">Overview</a><a href="#method">Method</a><a href="#experiments">Experiments</a><a href="#results">Results</a></nav>
       <a class="nav-paper" href="https://arxiv.org/abs/2609.05266" target="_blank" rel="noopener">Read the paper <span aria-hidden="true">↗</span></a>
     </div>
@@ -34,7 +36,7 @@
   <main id="main">
     <section class="hero wrap" aria-labelledby="hero-title">
       <div class="eyebrow"><span class="status-dot"></span> WORLD-ACTION MODELS · REAL-WORLD TOUCH</div>
-      <h1 id="hero-title">Tac<span>PAC</span></h1>
+      <h1 id="hero-title" aria-label="TacPAC"><button class="tactile-wordmark" type="button" aria-label="TacPAC — replay touch animation"><span class="tactile-halo" aria-hidden="true"></span><span class="tactile-ripple" aria-hidden="true"></span><span class="tactile-letter" aria-hidden="true">T</span><span class="tactile-letter" aria-hidden="true">a</span><span class="tactile-letter" aria-hidden="true">c</span><span class="tactile-letter tactile-pac" aria-hidden="true">P</span><span class="tactile-letter tactile-pac" aria-hidden="true">A</span><span class="tactile-letter tactile-pac" aria-hidden="true">C</span></button></h1>
       <h2>Tactile Prediction and<br class="desktop-break"> Real-Time Action Correction</h2>
       <p class="hero-subtitle">in World-Action Models for Contact-Rich Manipulation</p>
       <p class="authors"><span class="author">Zipei Ma<sup>1,2,3</sup></span><span>·</span><span class="author">Xiaofei Wei<sup>1,2</sup></span><span>·</span><span class="author">Junzhe Jiang<sup>1</sup></span><span>·</span><span class="author">Shunlin Lu<sup>3</sup></span><span>·</span><span class="author">Li Zhang<sup>1,2</sup></span></p>

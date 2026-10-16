@@ -1,0 +1,69 @@
+/* Soft contact, local compression, and an elastic release. */
+.tactile-wordmark {
+  --touch-x: 50%;
+  --touch-y: 65%;
+  position: relative;
+  display: inline-block;
+  isolation: isolate;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  vertical-align: top;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+.hero h1 .tactile-letter {
+  --press: 0;
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  color: var(--touch-color, var(--ink));
+  transform-origin: 50% 80%;
+  transform: translateY(calc(var(--press) * .075em))
+    scale(calc(1 + var(--press) * .035), calc(1 - var(--press) * .1));
+  transition: transform 650ms cubic-bezier(.2, 1.5, .35, 1), color 450ms ease;
+}
+.hero h1 .tactile-pac {
+  color: var(--touch-color, var(--green));
+}
+.tactile-wordmark.is-touching .tactile-letter {
+  transition-duration: 130ms, 180ms;
+  transition-timing-function: ease-out;
+}
+.tactile-halo,
+.tactile-ripple {
+  position: absolute;
+  z-index: 0;
+  left: var(--touch-x);
+  top: var(--touch-y);
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 0;
+}
+.tactile-halo {
+  width: 1.65em;
+  height: 1.65em;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, #c2764d35 0%, #dfa17a22 30%, #e6b0890d 52%, transparent 70%);
+  transition: opacity 650ms ease;
+}
+.tactile-wordmark.is-touching .tactile-halo {
+  opacity: 1;
+  transition-duration: 150ms;
+}
+.tactile-ripple {
+  width: 1.05em;
+  height: 1.05em;
+  border: 1.5px solid #c2764d;
+  box-shadow: 0 0 0 .12em #c2764d0b;
+  transform: translate(-50%, -50%) scale(.3);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero h1 .tactile-letter { transform: none; transition: none; }
+  .tactile-halo, .tactile-ripple { display: none; }
+}
