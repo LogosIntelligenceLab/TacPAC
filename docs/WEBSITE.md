@@ -30,7 +30,7 @@ Existing installation and robot deployment documentation in this folder is indep
 
 ## Native figures and source fidelity
 
-The teaser uses embedded photographs from `demo-output/teaser_editable.pdf`, with HTML/SVG labels, signal paths, and comparison bars. The method diagram is redrawn from `AAAI27-绘图/pipeline.pdf` and paper Figure 2. Its four steps can be selected or played in sequence. Figure 3 is a 48-action timeline with adjustable observation offset and latency window; the timing demonstration is illustrative and does not assert a fixed measured delay.
+The teaser uses embedded photographs from `demo-output/teaser_editable.pdf`, with HTML/SVG labels, signal paths, and comparison bars. The method diagram is redrawn from `AAAI27-绘图/pipeline.pdf` and paper Figure 2. Its four steps cycle automatically every 4.5 seconds. Selecting a step restarts that dwell time and keeps the sequence playing. Figure 3 is a 48-action timeline with adjustable observation offset and latency window; the timing demonstration is illustrative and does not assert a fixed measured delay.
 
 Figure 4 includes all seven methods, all five tasks, and the average. Table 1 includes the complete pathway matrix and all per-task values. Figure 5 retains all four phases and published error-bar geometry. Its bars were digitized from the PDF vector coordinates; the page explicitly marks values as approximate. The caption does not define the statistical interpretation of those error bars. The 4.9%/18.6% contact-transition callouts are directly reported in Section 4.3. Table 2 uses the exact published latency and rate values.
 

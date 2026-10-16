@@ -57,13 +57,19 @@
     packet.innerHTML=`<circle r="7" class="flow-packet-halo"/><circle r="3.3" class="flow-packet-core"/><animateMotion dur="${duration.toFixed(2)}s" repeatCount="indefinite" begin="indefinite"><mpath href="#${wire.id}"/></animateMotion>`;
     wire.after(packet);
   });
-  let flowStep=0,flowPlaying=!reducedMotion.matches;
-  function syncPipelineMotion(){const moving=flowPlaying&&!reducedMotion.matches&&!document.hidden&&q('#pipeline').classList.contains('in-view');q('#pipeline').classList.toggle('motion-paused',!moving);pipelineSVG[moving?'unpauseAnimations':'pauseAnimations']();}
+  let flowStep=0,flowTimer=null;
+  function syncPipelineMotion(){
+    const moving=!reducedMotion.matches&&!document.hidden&&q('#pipeline').classList.contains('in-view');
+    q('#pipeline').classList.toggle('motion-paused',!moving);
+    q('.flow-explanation').setAttribute('aria-live',reducedMotion.matches?'polite':'off');
+    pipelineSVG[moving?'unpauseAnimations':'pauseAnimations']();
+    clearTimeout(flowTimer);
+    // Every selected or newly visible step gets its full reading time.
+    if(moving)flowTimer=setTimeout(()=>{setFlow((flowStep+1)%4);syncPipelineMotion();},4500);
+  }
   function setFlow(step){flowStep=step;qa('[data-flow-step]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.flowStep)===step)));qa('[data-flow]').forEach(g=>{g.classList.toggle('is-active',Number(g.dataset.flow)===step);g.classList.toggle('is-complete',Number(g.dataset.flow)<step);if(Number(g.dataset.flow)===step)g.querySelectorAll('animateMotion').forEach(a=>a.beginElement());});q('#flow-number').textContent=String(step+1).padStart(2,'0');q('#flow-title').textContent=flowSteps[step][0];q('#flow-description').textContent=flowSteps[step][1];}
-  function updateFlowPlay(){q('#pipeline-play').textContent=flowPlaying?'Ⅱ Pause flow':'▶ Play flow';q('#pipeline-play').setAttribute('aria-pressed',String(flowPlaying));q('.flow-explanation').setAttribute('aria-live',flowPlaying?'off':'polite');syncPipelineMotion();}
-  qa('[data-flow-step]').forEach(b=>b.addEventListener('click',()=>{flowPlaying=false;setFlow(Number(b.dataset.flowStep));updateFlowPlay();}));
-  q('#pipeline-play').addEventListener('click',()=>{flowPlaying=!flowPlaying;updateFlowPlay();});setFlow(0);updateFlowPlay();
-  setInterval(()=>{if(flowPlaying&&!document.hidden&&q('#pipeline').classList.contains('in-view'))setFlow((flowStep+1)%4);},4500);
+  qa('[data-flow-step]').forEach(b=>b.addEventListener('click',()=>{setFlow(Number(b.dataset.flowStep));syncPipelineMotion();}));
+  setFlow(0);syncPipelineMotion();
   // Execution timing uses the paper's horizon. d is an illustrative, user-controlled window.
   let inferencePlaying=false,inferencePhase=0;
   function renderTimeline(){
@@ -142,6 +148,6 @@
   // Pause offscreen work and honor the OS motion preference.
   const visibleObserver=new IntersectionObserver(entries=>{entries.forEach(e=>{e.target.classList.toggle('in-view',e.isIntersecting);if(e.isIntersecting)e.target.classList.add('has-entered');if(e.target.id==='teaser')q('.concept-svg')[e.isIntersecting&&teaserMoving?'unpauseAnimations':'pauseAnimations']();if(e.target.id==='pipeline')syncPipelineMotion();});},{threshold:0});
   qa('.interactive-figure,.native-teaser,.result-panel').forEach(el=>visibleObserver.observe(el));
-  reducedMotion.addEventListener('change',()=>{if(reducedMotion.matches){flowPlaying=false;teaserMoving=false;setTeaserMotion();updateFlowPlay();stopInference();setTracePlay(false);}});
+  reducedMotion.addEventListener('change',()=>{if(reducedMotion.matches){teaserMoving=false;setTeaserMotion();stopInference();setTracePlay(false);}syncPipelineMotion();});
   document.addEventListener('visibilitychange',()=>{if(document.hidden){q('.concept-svg').pauseAnimations();tooltip.hidden=true;}else if(teaserMoving&&q('#teaser').classList.contains('in-view'))q('.concept-svg').unpauseAnimations();syncPipelineMotion();});
 })();
