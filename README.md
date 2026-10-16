@@ -1,4 +1,4 @@
-<h1 align="center"><img src="assets/tacpac_logo.svg" width="36" height="36" alt="TacPAC logo"> TacPAC</h1>
+<h1 align="center"><img src="assets/tacpac_logo.svg" width="24" height="24" alt="TacPAC logo"> TacPAC</h1>
 
 <p align="center"><strong>Tactile Prediction and Real-Time Action Correction in World-Action Models<br>for Contact-Rich Manipulation</strong></p>
 
