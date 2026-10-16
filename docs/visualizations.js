@@ -63,7 +63,7 @@
   function updateFlowPlay(){q('#pipeline-play').textContent=flowPlaying?'Ⅱ Pause flow':'▶ Play flow';q('#pipeline-play').setAttribute('aria-pressed',String(flowPlaying));q('.flow-explanation').setAttribute('aria-live',flowPlaying?'off':'polite');syncPipelineMotion();}
   qa('[data-flow-step]').forEach(b=>b.addEventListener('click',()=>{flowPlaying=false;setFlow(Number(b.dataset.flowStep));updateFlowPlay();}));
   q('#pipeline-play').addEventListener('click',()=>{flowPlaying=!flowPlaying;updateFlowPlay();});setFlow(0);updateFlowPlay();
-  setInterval(()=>{if(flowPlaying&&!document.hidden&&q('#pipeline').classList.contains('in-view'))setFlow((flowStep+1)%4);},3200);
+  setInterval(()=>{if(flowPlaying&&!document.hidden&&q('#pipeline').classList.contains('in-view'))setFlow((flowStep+1)%4);},6000);
   // Execution timing uses the paper's horizon. d is an illustrative, user-controlled window.
   let inferencePlaying=false,inferencePhase=0;
   function renderTimeline(){
