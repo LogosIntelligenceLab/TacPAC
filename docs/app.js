@@ -15,13 +15,6 @@ const results = [
   {name:'VITaL',values:[30,20,55,5,0,22]},
   {name:'ACT',values:[0,0,0,0,0,0]}
 ];
-const ablations = [
-  {name:'Vision only',value:22},
-  {name:'Without tactile prediction',value:33},
-  {name:'Without tactile correction',value:37},
-  {name:'Without tactile cache',value:47},
-  {name:'TacPAC (full)',value:64,ours:true}
-];
 const $ = (selector) => document.querySelector(selector);
 const all = (selector) => [...document.querySelectorAll(selector)];
 let activeTask='charger_plug';
@@ -75,9 +68,6 @@ $('#play-all').addEventListener('click',async()=>{
 $('#restart-all').addEventListener('click',()=>{playGeneration++;comparisonVideos().forEach(v=>{v.pause();v.currentTime=0;});$('#play-all').disabled=false;updatePlaybackButton();$('#playback-status').textContent='All three rollouts reset to the beginning.';});
 $('#playback-speed').addEventListener('change',()=>comparisonVideos().forEach(v=>v.playbackRate=Number($('#playback-speed').value)));
 selectTask(activeTask);
-function bar(name,value,ours){return `<div class="bar-row ${ours?'ours':''}"><span class="bar-label">${name}</span><div class="bar-track" aria-hidden="true"><div class="bar-fill" style="width:${value}%"></div></div><span class="bar-value">${value}%</span></div>`;}
-$('#average-chart').innerHTML=results.map(r=>bar(r.name,r.values[5],r.ours)).join('');
-$('#ablation-chart').innerHTML=ablations.map(r=>bar(r.name,r.value,r.ours)).join('');
 $('#results-table').innerHTML=results.map(r=>`<tr class="${r.ours?'ours':''}"><th scope="row">${r.name}</th>${r.values.map(v=>`<td>${v}</td>`).join('')}</tr>`).join('');
 let pendingDemoTime=null;
 const demoVideo=$('#demo-video');
