@@ -3,18 +3,9 @@
 <p align="center"><strong>Tactile Prediction and Real-Time Action Correction in World-Action Models<br>for Contact-Rich Manipulation</strong></p>
 
 <p align="center">
-  <a href="https://logosroboticsgroup.github.io/TacPAC/">Project page</a> ·
-  <a href="README-zh.md">中文</a> ·
-  <a href="#installation">Installation</a> ·
-  <a href="#training">Training</a> ·
-  <a href="#inference">Inference</a>
-</p>
-
-<p align="center">
-  <a href="https://logosroboticsgroup.github.io/TacPAC/"><img src="https://img.shields.io/badge/Website-TacPAC-2f6a59" alt="TacPAC project website"></a>
-  <a href="https://arxiv.org/pdf/2609.05266"><img src="https://img.shields.io/badge/arXiv-2609.05266-b31b1b?logo=arxiv" alt="arXiv:2609.05266"></a>
-  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white" alt="Python 3.10+">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="MIT License"></a>
+  <a href="https://arxiv.org/abs/2609.05266"><img src="https://img.shields.io/badge/Paper-arXiv-b31b1b?logo=arxiv" alt="Paper"></a>
+  <a href="https://logosroboticsgroup.github.io/TacPAC/"><img src="https://img.shields.io/badge/Project%20page-TacPAC-2f6a59" alt="Project page"></a>
+  <a href="README-zh.md"><img src="https://img.shields.io/badge/%E4%B8%AD%E6%96%87-README-3776AB" alt="中文"></a>
 </p>
 
 <p align="center">

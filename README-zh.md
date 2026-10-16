@@ -3,16 +3,9 @@
 <p align="center"><strong>面向接触密集型操作的触觉预测与实时动作修正世界-动作模型</strong></p>
 
 <p align="center">
-  <a href="https://logosroboticsgroup.github.io/TacPAC/">项目主页</a> ·
-  <a href="README.md">English</a> ·
-  <a href="#安装">安装</a> ·
-  <a href="#训练">训练</a> ·
-  <a href="#推理">推理</a>
-</p>
-
-<p align="center">
-  <a href="https://logosroboticsgroup.github.io/TacPAC/"><img src="https://img.shields.io/badge/Website-TacPAC-2f6a59" alt="TacPAC project website"></a>
-  <a href="https://arxiv.org/pdf/2609.05266"><img src="https://img.shields.io/badge/arXiv-2609.05266-b31b1b?logo=arxiv" alt="arXiv:2609.05266"></a>
+  <a href="https://arxiv.org/abs/2609.05266"><img src="https://img.shields.io/badge/Paper-arXiv-b31b1b?logo=arxiv" alt="Paper"></a>
+  <a href="https://logosroboticsgroup.github.io/TacPAC/"><img src="https://img.shields.io/badge/Project%20page-TacPAC-2f6a59" alt="Project page"></a>
+  <a href="README.md"><img src="https://img.shields.io/badge/English-README-3776AB" alt="English"></a>
 </p>
 
 <p align="center">
