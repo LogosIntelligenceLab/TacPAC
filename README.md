@@ -11,10 +11,10 @@
 </p>
 
 <p align="center">
+  <a href="https://logosroboticsgroup.github.io/TacPAC/"><img src="https://img.shields.io/badge/Website-TacPAC-2f6a59" alt="TacPAC project website"></a>
   <a href="https://arxiv.org/pdf/2609.05266"><img src="https://img.shields.io/badge/arXiv-2609.05266-b31b1b?logo=arxiv" alt="arXiv:2609.05266"></a>
   <img src="https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white" alt="Python 3.10+">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="MIT License"></a>
-  <img src="https://img.shields.io/badge/Robot-Flexiv_Rizon_4-blue" alt="Flexiv Rizon 4">
 </p>
 
 <p align="center">
