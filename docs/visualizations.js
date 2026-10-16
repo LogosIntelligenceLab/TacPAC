@@ -47,9 +47,20 @@
     ['Read the newest touch against the cache.','At offset m, the tactile expert attends to current tactile tokens and the cached prediction and plan. The base model does not need to run again.'],
     ['Correct only what can still change.','The expert predicts delta actions. Add them to the planned actions from m + d to H; executed actions and commands committed during latency stay fixed.']
   ];
+  // A moving contact signal follows each existing wire, including its bends.
+  const pipelineSVG=q('#pipeline-svg');
+  qa('#pipeline-svg .flow-wire').forEach((wire,index)=>{
+    wire.id=`pipeline-wire-${index}`;
+    const packet=document.createElementNS('http://www.w3.org/2000/svg','g');
+    packet.setAttribute('class','flow-packet');packet.setAttribute('aria-hidden','true');
+    const duration=Math.max(.9,Math.min(2.8,wire.getTotalLength()/150));
+    packet.innerHTML=`<circle r="7" class="flow-packet-halo"/><circle r="3.3" class="flow-packet-core"/><animateMotion dur="${duration.toFixed(2)}s" repeatCount="indefinite" begin="indefinite"><mpath href="#${wire.id}"/></animateMotion>`;
+    wire.after(packet);
+  });
   let flowStep=0,flowPlaying=!reducedMotion.matches;
-  function setFlow(step){flowStep=step;qa('[data-flow-step]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.flowStep)===step)));qa('[data-flow]').forEach(g=>{g.classList.toggle('is-active',Number(g.dataset.flow)===step);g.classList.toggle('is-complete',Number(g.dataset.flow)<step);});q('#flow-number').textContent=String(step+1).padStart(2,'0');q('#flow-title').textContent=flowSteps[step][0];q('#flow-description').textContent=flowSteps[step][1];}
-  function updateFlowPlay(){q('#pipeline-play').textContent=flowPlaying?'Ⅱ Pause flow':'▶ Play flow';q('#pipeline-play').setAttribute('aria-pressed',String(flowPlaying));q('#pipeline').classList.toggle('motion-paused',!flowPlaying);q('.flow-explanation').setAttribute('aria-live',flowPlaying?'off':'polite');}
+  function syncPipelineMotion(){const moving=flowPlaying&&!reducedMotion.matches&&!document.hidden&&q('#pipeline').classList.contains('in-view');q('#pipeline').classList.toggle('motion-paused',!moving);pipelineSVG[moving?'unpauseAnimations':'pauseAnimations']();}
+  function setFlow(step){flowStep=step;qa('[data-flow-step]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.flowStep)===step)));qa('[data-flow]').forEach(g=>{g.classList.toggle('is-active',Number(g.dataset.flow)===step);g.classList.toggle('is-complete',Number(g.dataset.flow)<step);if(Number(g.dataset.flow)===step)g.querySelectorAll('animateMotion').forEach(a=>a.beginElement());});q('#flow-number').textContent=String(step+1).padStart(2,'0');q('#flow-title').textContent=flowSteps[step][0];q('#flow-description').textContent=flowSteps[step][1];}
+  function updateFlowPlay(){q('#pipeline-play').textContent=flowPlaying?'Ⅱ Pause flow':'▶ Play flow';q('#pipeline-play').setAttribute('aria-pressed',String(flowPlaying));q('.flow-explanation').setAttribute('aria-live',flowPlaying?'off':'polite');syncPipelineMotion();}
   qa('[data-flow-step]').forEach(b=>b.addEventListener('click',()=>{flowPlaying=false;setFlow(Number(b.dataset.flowStep));updateFlowPlay();}));
   q('#pipeline-play').addEventListener('click',()=>{flowPlaying=!flowPlaying;updateFlowPlay();});setFlow(0);updateFlowPlay();
   setInterval(()=>{if(flowPlaying&&!document.hidden&&q('#pipeline').classList.contains('in-view'))setFlow((flowStep+1)%4);},3200);
@@ -129,8 +140,8 @@
   q('#trace-task').addEventListener('change',()=>{setTracePlay(false);renderTrace();});q('#trace-cursor').addEventListener('input',()=>{setTracePlay(false);traceCursor();});q('#trace-play').addEventListener('click',()=>{setTracePlay(!tracePlaying);if(tracePlaying&&+q('#trace-cursor').value>=1000)q('#trace-cursor').value=0;});
   setInterval(()=>{if(!tracePlaying||document.hidden||!q('#trace-results').classList.contains('in-view'))return;const n=Math.min(1000,+q('#trace-cursor').value+3);q('#trace-cursor').value=n;traceCursor();if(n===1000)setTracePlay(false);},35);renderTrace();
   // Pause offscreen work and honor the OS motion preference.
-  const visibleObserver=new IntersectionObserver(entries=>{entries.forEach(e=>{e.target.classList.toggle('in-view',e.isIntersecting);if(e.isIntersecting)e.target.classList.add('has-entered');if(e.target.id==='teaser')q('.concept-svg')[e.isIntersecting&&teaserMoving?'unpauseAnimations':'pauseAnimations']();});},{threshold:0});
+  const visibleObserver=new IntersectionObserver(entries=>{entries.forEach(e=>{e.target.classList.toggle('in-view',e.isIntersecting);if(e.isIntersecting)e.target.classList.add('has-entered');if(e.target.id==='teaser')q('.concept-svg')[e.isIntersecting&&teaserMoving?'unpauseAnimations':'pauseAnimations']();if(e.target.id==='pipeline')syncPipelineMotion();});},{threshold:0});
   qa('.interactive-figure,.native-teaser,.result-panel').forEach(el=>visibleObserver.observe(el));
   reducedMotion.addEventListener('change',()=>{if(reducedMotion.matches){flowPlaying=false;teaserMoving=false;setTeaserMotion();updateFlowPlay();stopInference();setTracePlay(false);}});
-  document.addEventListener('visibilitychange',()=>{if(document.hidden){q('.concept-svg').pauseAnimations();tooltip.hidden=true;}else if(teaserMoving&&q('#teaser').classList.contains('in-view'))q('.concept-svg').unpauseAnimations();});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){q('.concept-svg').pauseAnimations();tooltip.hidden=true;}else if(teaserMoving&&q('#teaser').classList.contains('in-view'))q('.concept-svg').unpauseAnimations();syncPipelineMotion();});
 })();

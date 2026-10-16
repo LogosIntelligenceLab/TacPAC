@@ -14,3 +14,10 @@
 /* Demo leads the hero; the teaser now illustrates the overview. */
 .hero .demo-block{text-align:left;margin-top:40px}
 @media(max-width:760px){.hero .demo-block{margin-top:28px}}
+
+/* Signal packets travel in the same direction as the architecture arrows. */
+.flow-packet{opacity:0;pointer-events:none}
+.flow-node.is-active .flow-packet{opacity:1}
+.flow-packet-halo{fill:#c2764d;fill-opacity:.2}
+.flow-packet-core{fill:#c2764d;stroke:#fff;stroke-width:1}
+@media(prefers-reduced-motion:reduce){.flow-packet{display:none}}
