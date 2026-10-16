@@ -572,15 +572,20 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--pre_resize_image_size",
         type=str,
-        default="auto",
-        help="Resize each decoded InferSystem camera image to H,W before BaseDataConfig preprocessing. Use 'auto', 'none', or e.g. '224,224'.",
+        default="none",
+        help=(
+            "Resize each decoded InferSystem camera image to H,W before BaseDataConfig preprocessing. "
+            "Defaults to 'none' to use only BaseDataConfig resizing, shared with training and "
+            "configured by the checkpoint. Use 'auto', 'none', or e.g. '224,224'."
+        ),
     )
     parser.add_argument(
         "--rgb_resize_mode",
         choices=("crop", "stretch"),
         default="crop",
         help=(
-            "How RGB frames are fit to --pre_resize_image_size, which must match how the "
+            "Only applies when --pre_resize_image_size is enabled. "
+            "How RGB frames are fit to that size, which must match how the "
             "training videos were baked: 'crop' = aspect-preserving resize + center crop "
             "(convert_flexiv_to_lerobot default), 'stretch' = squash the whole frame (datasets "
             "converted before that split). Tactile frames are always stretched."
@@ -680,14 +685,15 @@ def main(args: argparse.Namespace) -> None:
         pre_resize_image_size,
         policy.get_metadata() if hasattr(policy, "get_metadata") else {},
     )
-    # Geometry has to match how the training videos were baked; nothing in the checkpoint
-    # records it, so it is stated loudly here rather than guessed.
-    logger.info(
-        "Image fitting to %s: rgb=%s, tactile=stretch (tactile cameras: %s)",
-        pre_resize_image_size,
-        args.rgb_resize_mode,
-        sorted(adapter_config.tactile_cameras) or "none",
-    )
+    if pre_resize_image_size is None:
+        logger.info("Camera pre-resize disabled; using the policy's training image preprocessing.")
+    else:
+        logger.info(
+            "Camera pre-resize to %s: rgb=%s, tactile=stretch (tactile cameras: %s)",
+            pre_resize_image_size,
+            args.rgb_resize_mode,
+            sorted(adapter_config.tactile_cameras) or "none",
+        )
 
     tactile_preprocessor = getattr(policy, "_tactile_preprocessor", None)
     logger.info(
