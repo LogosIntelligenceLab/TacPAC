@@ -53,7 +53,7 @@
     wire.id=`pipeline-wire-${index}`;
     const packet=document.createElementNS('http://www.w3.org/2000/svg','g');
     packet.setAttribute('class','flow-packet');packet.setAttribute('aria-hidden','true');
-    const duration=Math.max(.9,Math.min(2.8,wire.getTotalLength()/150));
+    const duration=Math.max(1.35,Math.min(4.2,wire.getTotalLength()/100));
     packet.innerHTML=`<circle r="7" class="flow-packet-halo"/><circle r="3.3" class="flow-packet-core"/><animateMotion dur="${duration.toFixed(2)}s" repeatCount="indefinite" begin="indefinite"><mpath href="#${wire.id}"/></animateMotion>`;
     wire.after(packet);
   });
@@ -63,7 +63,7 @@
   function updateFlowPlay(){q('#pipeline-play').textContent=flowPlaying?'Ⅱ Pause flow':'▶ Play flow';q('#pipeline-play').setAttribute('aria-pressed',String(flowPlaying));q('.flow-explanation').setAttribute('aria-live',flowPlaying?'off':'polite');syncPipelineMotion();}
   qa('[data-flow-step]').forEach(b=>b.addEventListener('click',()=>{flowPlaying=false;setFlow(Number(b.dataset.flowStep));updateFlowPlay();}));
   q('#pipeline-play').addEventListener('click',()=>{flowPlaying=!flowPlaying;updateFlowPlay();});setFlow(0);updateFlowPlay();
-  setInterval(()=>{if(flowPlaying&&!document.hidden&&q('#pipeline').classList.contains('in-view'))setFlow((flowStep+1)%4);},6000);
+  setInterval(()=>{if(flowPlaying&&!document.hidden&&q('#pipeline').classList.contains('in-view'))setFlow((flowStep+1)%4);},4500);
   // Execution timing uses the paper's horizon. d is an illustrative, user-controlled window.
   let inferencePlaying=false,inferencePhase=0;
   function renderTimeline(){
