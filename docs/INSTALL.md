@@ -22,7 +22,7 @@ nvcc -V
 ## Python environment
 
 ```bash
-git clone git@github.com:LogosRoboticsGroup/TacPAC.git
+git clone git@github.com:LogosIntelligenceLab/TacPAC.git
 cd TacPAC
 
 conda create -n tacpac python=3.10 -y

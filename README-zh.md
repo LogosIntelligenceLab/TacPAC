@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://arxiv.org/abs/2609.05266"><img src="https://img.shields.io/badge/Paper-arXiv-b31b1b?logo=arxiv" alt="Paper"></a>
-  <a href="https://logosroboticsgroup.github.io/TacPAC/"><img src="https://img.shields.io/badge/Project%20page-TacPAC-2f6a59" alt="Project page"></a>
+  <a href="https://logosintelligencelab.github.io/TacPAC/"><img src="https://img.shields.io/badge/Project%20page-TacPAC-2f6a59" alt="Project page"></a>
   <a href="README.md"><img src="https://img.shields.io/badge/English-README-3776AB" alt="English"></a>
 </p>
 
@@ -85,7 +85,7 @@ TacPAC 分两阶段训练：
 完整依赖与视频解码器配置见[安装指南](docs/INSTALL.md)。
 
 ```bash
-git clone git@github.com:LogosRoboticsGroup/TacPAC.git
+git clone git@github.com:LogosIntelligenceLab/TacPAC.git
 cd TacPAC
 
 conda create -n tacpac python=3.10 -y

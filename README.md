@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://arxiv.org/abs/2609.05266"><img src="https://img.shields.io/badge/Paper-arXiv-b31b1b?logo=arxiv" alt="Paper"></a>
-  <a href="https://logosroboticsgroup.github.io/TacPAC/"><img src="https://img.shields.io/badge/Project%20page-TacPAC-2f6a59" alt="Project page"></a>
+  <a href="https://logosintelligencelab.github.io/TacPAC/"><img src="https://img.shields.io/badge/Project%20page-TacPAC-2f6a59" alt="Project page"></a>
   <a href="README-zh.md"><img src="https://img.shields.io/badge/%E4%B8%AD%E6%96%87-README-3776AB" alt="中文"></a>
 </p>
 
@@ -99,7 +99,7 @@ The code is tested with Python 3.10 and CUDA-capable PyTorch environments.
 See the [installation guide](docs/INSTALL.md) for dependency and video-decoder setup.
 
 ```bash
-git clone git@github.com:LogosRoboticsGroup/TacPAC.git
+git clone git@github.com:LogosIntelligenceLab/TacPAC.git
 cd TacPAC
 
 conda create -n tacpac python=3.10 -y

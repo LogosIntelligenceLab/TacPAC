@@ -1,6 +1,6 @@
 # TacPAC project page
 
-Public URL: https://logosroboticsgroup.github.io/TacPAC/
+Public URL: https://logosintelligencelab.github.io/TacPAC/
 
 GitHub Pages publishes `main` → `/docs`. The `.nojekyll` file keeps this a plain static site. Pushing changes to the publishing branch triggers the Pages build and deployment.
 
