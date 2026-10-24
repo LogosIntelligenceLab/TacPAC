@@ -187,9 +187,9 @@ TacPAC 的开发深受以下优秀开源工作的启发：[StarVLA](https://gith
 
 <a id="引用"></a>
 
-## 📝 引用
+## 📝 BibTex
 
-如果 TacPAC 对你的研究有帮助，请引用我们的[论文](https://arxiv.org/pdf/2609.05266)。
+如果您觉得我们的仓库有用，欢迎给我们一个 star ⭐️，并在您的工作中引用我们的[论文](https://arxiv.org/pdf/2609.05266)：
 
 ```bibtex
 @article{ma2026tacpac,

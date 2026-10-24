@@ -222,9 +222,9 @@ community: [StarVLA](https://github.com/starVLA/starVLA),
 
 <a id="citation"></a>
 
-## 📝 Citation
+## 📝 BibTex
 
-If you find TacPAC useful, please cite our [paper](https://arxiv.org/pdf/2609.05266).
+If you find our repository useful, please consider giving it a star ⭐️ and citing our [paper](https://arxiv.org/pdf/2609.05266) in your work:
 
 ```bibtex
 @article{ma2026tacpac,
