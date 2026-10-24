@@ -17,7 +17,7 @@ authors:
   - family-names: Zhang
     given-names: Li
 repository-code: 'https://github.com/LogosIntelligenceLab/TacPAC'
-url: 'https://github.com/LogosIntelligenceLab/TacPAC'
+url: 'https://logosintelligencelab.github.io/TacPAC/'
 abstract: >-
   TacPAC is a tactile world-action model that turns predicted future contact
   into asynchronous, real-time corrections of an executing action chunk.
